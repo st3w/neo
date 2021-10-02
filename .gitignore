@@ -1,0 +1,16 @@
+aclocal.m4
+autom4te.cache/
+build/
+build-aux/
+configure
+config.log
+config.status
+depcomp
+install-sh
+Makefile
+Makefile.in
+missing
+neo
+.deps
+*.o
+*.core

@@ -1,0 +1,52 @@
+"There's a difference between knowing the path... and walking the path."
+    -Morpheus
+
+neo is a program written in C++ that uses the ncursesw library to control
+the terminal. It is built using autotools.
+
+The code is split mostly into three files:
+
+neo.cpp - Handles the main loop, command-line options, and initializing ncurses.
+cloud.cpp - Implements the Cloud class, which manages all the Droplets.
+droplet.cpp - Implements the Droplet class, which moves/draws the characters.
+
+The application's main loop creates a single Cloud object that manages all
+the Droplets. Each Droplet is responsible for moving and drawing a vertical
+string of characters. Cloud and Droplet are tightly coupled. It is expected
+that Cloud should call into each Droplet's methods, but several Droplet
+methods call back into Cloud. This is one possible area for improvement.
+Cloud also keeps track of the color and glitch status for each character on
+screen.
+
+neo makes heavy use of the "pool" idiom, which is more commonly seen in game
+development. Rather than allocating objects on the fly, neo allocates many
+objects, disabling and reusing them as needed. For example, neo allocates as
+many Droplets as it needs whenever Cloud is reset. neo also uses a pool for the
+characters that are drawn to the screen. Each Droplet has an index into this
+pool of random characters.
+
+neo does a few other tricks to improve performance. The main one is that it
+tries to draw as few characters as possible per frame rather than drawing
+every character onscreen. To do this, each Droplet keeps track of a "CurLine"
+position and a "PutLine". CurLine indicates the last line that was drawn on
+the last frame. PutLine indicates the last line that must be drawn this frame.
+
+The code is not idiomatic modern C++. There are many uses of older C functions
+such as fprintf(), strtok(), etc. In general, the style is a hodge-podge of
+C++11 with older C idioms and a liberal use of cstdint types with an avoidance
+of lambdas, streams, templates, and overusing the "auto" keyword. The code
+makes some use of the newer C++11 chrono and random libraries. K&R C bracing
+is the norm, as are soft tabs.
+
+If you submit a pull request, please avoid adding additional dependencies
+and make sure any relevant documentation has also been added or updated.
+
+Ideas for contribution:
+
+    - Fix any open issue on GitHub
+    - Create a GIF capture of the application to showcase on the GitHub README
+    - Refactor Cloud to better follow SOLID OOP principles
+    - Make Cloud a proper singleton
+    - Use one mt19937 object per distribution for better independence
+    - Add more parameters to --charset (e.g. Chinese)
+    - Performance improvements

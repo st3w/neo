@@ -1,0 +1,47 @@
+neo works with Linux, and it should work with other POSIX-compliant
+operating systems such as macOS and FreeBSD. Windows is not supported.
+
+The following packages are required to build and run neo:
+
+- autoconf: neo is built using autotools
+- autoconf-archive: required for some of the autoconf checks
+- build-essential: make and g++ are used for compilation
+- libncurses-dev: neo uses ncursesw to control the terminal
+
+You will need to ensure that your C++ compiler supports C++11 and that
+your autoconf version is at least 2.61. g++ and clang should both work
+for compilation.
+
+To build neo, run the following shell commands from the main directory:
+
+./autogen.sh
+./configure
+make
+sudo make install
+
+
+For developers, the original author strongly recommends creating a "build"
+directory and running most of the steps from there. The reason is that
+autotools may clutter the "src" directory with build artifacts otherwise.
+The .gitignore might not be ignoring everything that it needs to...
+
+./autogen.sh
+mkdir -p build
+cd build
+make clean make -j3
+sudo make install
+
+
+If you wish to work on neo or debug it, the following configure options
+may help:
+
+./configure CXXFLAGS='-g -O0 -Wall -Werror'
+
+
+Here is a build recipe for users who want a smaller install size.
+In the original author's experience, clang++ produces a slightly smaller
+executable for neo.
+
+./configure CXXFLAGS="-Os -march=native -mtune=native -DNDEBUG -fno-exceptions -ffunction-sections -fdata-sections -flto" LDFLAGS="-Wl,--gc-sections -flto" CXX="clang++"
+make -j3
+sudo make install-strip

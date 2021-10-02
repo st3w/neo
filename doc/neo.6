@@ -1,0 +1,419 @@
+.TH NEO 6 "Oct 2 2021" "neo version 0.5" "neo User Manual"
+.SH "NAME"
+neo \- simulate the digital rain from "The Matrix"
+.SH "SYNOPSIS"
+\fBneo\fR [\fI\,OPTIONS\/\fR]...
+.SH "DESCRIPTION"
+.PP
+\fBneo\fR recreates the digital rain effect from "The Matrix". Streams of
+random characters will endlessly scroll down your terminal screen. There are
+many differing depictions of this effect throughout the Matrix franchise.
+\fBneo\fR attempts to closely mimic the scene from "The Matrix" where Cypher
+explains the code to Neo. It imitates some of the finer details such as
+the characters used (half-width katakana), uneven colors, color palette,
+glitching, and flickering.
+.PP
+The digital rain is made of many "droplets". Each droplet scrolls vertically
+down a column. There can be multiple droplets in each column. Some characters
+on the screen are "glitched" - their values will change randomly until they
+are erased. The bottom of each droplet is a bit brighter than the rest.
+.PP
+You can run \fBneo\fR without any arguments, but it has many options to
+customize it to your liking. It can also respond to key presses (try
+pressing a number!), and it accepts a color file (see the "COLOR FILE" section
+below), which allows \fBneo\fR to display user-defined colors.
+.SH "OPTIONS"
+.PP
+\fBneo\fR takes options in two forms: short and long. Short options cannot
+include an equal sign but long options can. Example for \-S/\-\-speed:
+.RS
+.PP
+These will work:
+.RS
+.PP
+-S 16
+.br
+--speed 16
+.br
+--speed=16
+.RE
+.PP
+These will not:
+.RS
+.PP
+-S=16
+.br
+--S 16
+.RE
+.RE
+.TP
+\fB\-a\fR, \fB\-\-async\fR
+Makes each column of characters scroll at an independent speed. Each column's
+speed is still limited by the \fB\-S\fR/\fB\-\-speed\fR arg. All droplets in a
+column will always scroll at the speed.
+.TP
+\fB\-b\fR, \fB\-\-bold\fR=\fINUM\fR
+Controls if and how neo displays bold characters.
+0=off, 1=random (default), 2=all.
+.TP
+\fB\-C\fR, \fB\-\-colorfile\fR=\fIFILE\fR
+Read the colors from a file. This option is mutually exclusive with the
+\fB\-c\fR/\fB\-\-color\fR and \fB\-\-mono\fR options. See the "COLOR FILE"
+section below for more info.
+.TP
+\fB\-c\fR, \fB\-\-color\fR=\fICOLOR\fR
+Sets the foreground text color. This option is mutually exclusive with the
+\fB\-C\fR/\fB\-\-colorfile\fR and \fB\-\-mono\fR options. The available
+colors are: green, green2, green3, yellow, orange, red, blue, cyan, gold,
+rainbow, purple, pink, pink2, vaporwave, and gray.
+.TP
+\fB\-D\fR, \fB\-\-defaultbg\fR
+Use the default terminal background color. This option is mutually exclusive
+with the \fB\-C\fR/\fB\-\-colorfile\fR and \fB\-\-mono\fR options.
+.TP
+\fB\-d\fR, \fB\-\-density\fR=\fINUM\fR
+Controls how many droplets will appear onscreen. NUM is a decimal number.
+Its default value is 1.0. Values greater than 0.0 but less than 100.0 are
+allowed. However, values in the range [0.25, 4.0] will probably look best.
+.TP
+\fB\-F\fR, \fB\-\-fullwidth\fR
+Use two columns per character. This option is useful when displaying
+characters that take two columns to display such as Greek and full-width
+katakana.
+.TP
+\fB\-f\fR, \fB\-\-fps\fR=\fINUM\fR
+Sets a frame rate target. By default, \fBneo\fR will run at 60Hz. \fBneo\fR
+does not attempt to query the OS for any display info. So it can't match your
+monitor's refresh rate by default unless it happens to be 60Hz. Lower frame
+rates will reduce CPU usage and improve battery life on portable devices.
+.TP
+\fB\-G\fR, \fB\-\-glitchpct\fR=\fINUM\fR
+Sets the percentage of characters onscreen that glitch. NUM is a decimal
+number between 0.0 and 1.0 inclusive. The default value is 0.1 (i.e. 10%).
+.TP
+\fB\-g\fR, \fB\-\-glitchms\fR=\fINUM1\fR,\fINUM2\fR
+Controls how often the characters on screen glitch. A "glitch" refers to when
+a character changes into another. Each glitch is accompanied by a flickering
+of the character's color if colors are enabled. After each glitch, neo will
+wait for some time before doing the next glitch. The time it waits is chosen
+randomly to be between the two values provided (inclusive). NUM1 and NUM2 are
+positive integers that represent milliseconds. Their default values are 300
+and 400.
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+Shows the help message.
+.TP
+\fB\-l\fR, \fB\-\-lingerms\fR=\fINUM1\fR,\fINUM2\fR
+Controls how long characters stay onscreen after they finish scrolling. For
+each column, neo will pick a random value between NUM1 and NUM2 inclusive.
+NUM1 and NUM2 are positive integers that represent milliseconds. The default
+values are 1 and 3000.
+.TP
+\fB\-M\fR, \fB\-\-shadingmode\fR=\fINUM\fR
+Controls how neo assigns color values to characters on the screen.
+0=random (default), 1=gradient.
+.TP
+\fB\-m\fR, \fB\-\-message\fR=\fISTR\fR
+Displays a message in the center of the screen. The message is gradually
+uncovered as characters stream past it. This effect is similar to the title
+reveal in the movies. The message should be surrounded with double quotes.
+neo parses arguments using getopt_long(), which does not have Unicode support.
+So, unfortunately, this argument only accepts simple ASCII text. The message
+will not display well if you also use the \fB\-F\fR/\fB\-\-fullwidth\fR option.
+To unveil the message faster, the following options may help:
+.RS
+.RS
+.PP
+\fBneo\fR -m "the message" --speed=12 --density=3 --lingerms=1,1 --rippct=0
+.RE
+.RE
+.TP
+\fB\-p\fR, \fB\-\-profile\fR
+Turns on the profiling mode. This mode functions as normal except it times
+how long each frame takes and writes the values to a file called
+"time_profile.txt" in the current working directory.
+.TP
+\fB\-r\fR, \fB\-\-rippct\fR=\fINUM\fR
+Sets the percentage of droplets that stop scrolling before reaching the bottom
+of the screen. NUM is a decimal number between 0.0 and 1.0 inclusive. The
+default value is ~0.33 (i.e. about a third).
+.TP
+\fB\-S\fR, \fB\-\-speed\fR=\fINUM\fR
+Controls how fast characters scroll down the screen. NUM is a decimal number
+that sets the number of characters drawn per second. The default value is 8.0.
+If \fB\-a\fR/\fB\-\-async\fR is used, this option sets an upper bound on the
+value chosen for each droplet's speed.
+.TP
+\fB\-s\fR, \fB\-\-screensaver\fR
+If this option is set, \fBneo\fR will exit on the first key press.
+.TP
+\fB\-t\fR, \fB\-\-truecolor\fR
+Use 32-bit color. Not all built-in color schemes support 32-bit color,
+and they will look identical to the 256 color mode. This option is
+mutually exclusive with the \fB\-\-mono\fR and \fB\-\-256\fR options.
+.TP
+\fB\-V\fR, \fB\-\-version\fR
+Displays the version, build date, copyright, and license.
+.TP
+\fB\-\-ascii\fR
+Display only simple ASCII characters. This option is useful if your system
+cannot display Unicode characters (e.g. half-width katakana).
+.TP
+\fB\-\-chars\fR=\fINUM1\fR,\fINUM2\fR
+Tells \fBneo\fR to display Unicode characters between NUM1 and NUM2 inclusive.
+NUM1 and NUM2 are Unicode code points in hexadecimal (e.g. 0x1F030). This
+argument can be used multiple times. If \fB\-\-charset\fR is not used,
+\fBneo\fR will only use the values provided by this option. If a charset is
+also specified, \fBneo\fR will use both the charset and the characters
+provided by this option.
+.TP
+\fB\-\-charset\fR=\fILANG\fR
+Sets the charset that is used to draw characters onto the screen. It can be
+combined with the \fB--chars\fR option. The supported charsets are: english,
+digits, punc, bin, binary, hex, hexadecimal, katakana, greek, cyrillic,
+arabic, hebrew, and devanagari.
+.TP
+\fB\-\-maxdpc\fR=\fINUM\fR
+Sets the maximum number of droplets per column. The default value is 3.
+.TP
+\fB\-\-mono\fR
+Disables color output. This option is mutually exclusive with the
+\fB\-t\fR/\fB\-\-truecolor\fR and \fB\-\-256\fR options.
+.TP
+\fB\-\-noglitch\fR
+Disables character glitching.
+.TP
+\fB\-\-shortpct\fR=\fINUM\fR
+Sets the percentage of shortened droplets. If a droplet is not shortened,
+it will extend from the top of the screen to final line, which is often
+the bottom of the screen but not always (see also: \fB\-r\fR/\fB\-\-rippct\fR).
+NUM is a decimal number between 0.0 and 1.0 inclusive. The default value is
+0.5 (i.e. 50%).
+.TP
+\fB\-\-256\fR
+Use 256 colors. This option is mutually exclusive with the
+\fB\-t\fR/\fB\-\-truecolor\fR and \fB\-\-mono\fR options.
+.SH "KEYS"
+.PP
+You can press keys while \fBneo\fR is running to control its behavior. The key
+bindings cannot be changed without modifying the program code. Some keys
+can be held to increase their effect (e.g. holding UP increases speed further).
+.PP
+Here are the available key controls:
+.RS
+.PP
+\'SPACE' - clears the screen
+.br
+\'UP' - increases the scrolling speed
+.br
+\'DOWN' - decreases the scrolling speed
+.br
+\'RIGHT' - increases the number of characters that are glitchy
+.br
+\'LEFT' - decreases the number of characters that are glitchy
+.br
+\'TAB' - toggles the shading mode between random and gradient
+.br
+\'ESC' - exits \fBneo\fR
+.br
+\'+' - increases the number of droplets onscreen
+.br
+\'\-' - decreases the number of droplets onscreen
+.br
+\'a' - toggles asynchronous droplet speed
+.br
+\'p' - pauses \fBneo\fR
+.br
+\'q' - exits \fBneo\fR
+.br
+\'1' - sets the color to green
+.br
+\'2' - sets the color to green2
+.br
+\'3' - sets the color to green3
+.br
+\'4' - sets the color to gold
+.br
+\'5' - sets the color to pink2
+.br
+\'6' - sets the color to red
+.br
+\'7' - sets the color to blue
+.br
+\'8' - sets the color to cyan
+.br
+\'9' - sets the color to purple
+.br
+\'0' - sets the color to gray
+.br
+\'!' - sets the color to rainbow
+.br
+\'@' - sets the color to yellow
+.br
+\'#' - sets the color to orange
+.br
+\'$' - sets the color to pink
+.br
+\'%' - sets the color to vaporwave
+.RE
+.SH "COLOR FILE"
+.PP
+\fBneo\fR can read a file that specifies the background color and all the
+foreground colors. The file is given via the \fB\-C/\-\-colorfile\fR option.
+Each line in the file describes a color. The first line is the backgroud
+color. Each subsequent line describes a foreground color. Each file must
+contain at least two lines: one for the background and one for the
+foreground. Typically, you will want to put the foreground colors in
+ascending order of brightness. \fBneo\fR will not sort the colors. The last
+color should usually be very bright (e.g. white).
+.PP
+Each line in the file specifies one value or four values. If only one value is
+given, it is treated as a 256 terminal color code (e.g. 16 is black). If four
+values are given, the first is treated as a 256 color code and the other three
+are the RGB components of the 32-bit color. Each component is a value from 0
+to 1000, which closely mimics how ncurses handles color. Each value is
+separated by a comma, and whitespace is allowed.
+.PP
+If more than one value is given on a line, then all four values must be given.
+Lines do not all have to have the same number of components i.e. some lines
+can just specify the 256 color code while others can specify all four values.
+.PP
+On most systems, if a value of "-1" is provided for the 256 color code, this
+will set the color to the system default. This can be useful if you want to
+keep the default background.
+.PP
+All ncurses implementations should allow you to override at least the first 256
+colors. Some will let you override even more than that. ncurses should restore
+all colors back to their previous state as long as \fBneo\fR exits cleanly.
+.PP
+If the \fB\-\-256\fR option is used, all 32-bit RGB components in the color
+file will be parsed if they are given, but they will be unused.
+.PP
+Example 1: Blue text on a red background using only 256 color codes
+.RS
+.PP
+196
+.br
+21
+.RE
+.PP
+Example 2: Different shades of purple text on a yellow background with some
+32-bit color components
+.RS
+.PP
+228,917,888,59
+.br
+54
+.br
+92
+.br
+129,750,963,128
+.RE
+.PP
+Example 3: Default background and various shades of green using only 256 color codes
+.RS
+.PP
+-1
+.br
+34
+.br
+40
+.br
+46
+.br
+82
+.br
+231
+.RE
+.SH "PERFORMANCE"
+.PP
+\fBneo\fR can have two main performance issues: high CPU utilization and
+stuttering.  A terminal emulator with GPU acceleration (e.g. Alacritty) may
+significantly improve these issues. The CPU utilization by \fBneo\fR itself
+is fairly low, even at high frame rates on large screens. However, your
+terminal emulator may use substantial CPU resources to draw everything.
+Without a fast terminal emulator, this application may use up a whole CPU
+core or three.
+.PP
+Sometimes the text will not scroll smoothly. Again, a fast terminal emulator
+will probably help. You will also typically want the frame rate
+(i.e. --fps) to be evenly divisible by the character speed (i.e. -S/--speed).
+Sometimes, the glitching effect will lead to stuttering because a substantial
+number of characters onscreen will have to be redrawn. Reducing the
+glitchiness (i.e. --glitchpct) or disabling glitching (i.e. --noglitch) may
+help.
+.PP
+If you experience performance issues, here are some things to try:
+.RS
+.PP
+1. Use a GPU-accelerated terminal emulator
+.br
+2. Run \fBneo\fR on a smaller screen/window
+.br
+3. Reduce the frame rate (e.g. --fps=30)
+.br
+4. Reduce the number of droplets onscreen (e.g. -d 0.5)
+.br
+5. Reduce the character speed (e.g. --speed=6)
+.br
+6. Disabling glitching (i.e. --noglitch)
+.br
+7. Disable colors (i.e. --mono)
+.br
+8. Disable bold characters (i.e. --bold=0)
+.br
+9. Disable Unicode characters (i.e. --ascii)
+.RE
+.PP
+Here is a "potato mode" config that should perform well on most systems:
+.RS
+.PP
+\fBneo\fR --fps=20 -d 0.5 --speed=5 --noglitch --mono --bold=0 --ascii
+.RE
+.SH "EXAMPLES"
+.PP
+Example 0: Just run it
+.RS
+.PP
+\fBneo\fR
+.RE
+.PP
+Example 1: Sets a faster, asynchronous scrolling speed with 256 colors
+.RS
+.PP
+\fBneo\fR -S 12 -a --color=green3 --256
+.RE
+.PP
+Example 2: Red text with a custom message and Cyrillic characters
+.RS
+.PP
+\fBneo\fR --color=red --charset=cyrillic -m "IN SOVIET RUSSIA, COMPUTER PROGRAMS YOU!"
+.RE
+.PP
+Example 3: Displays golden Greek characters that are full-width
+.RS
+.PP
+\fBneo\fR --color=gold --charset=greek -F
+.RE
+.PP
+Example 4: Uses \fB\-\-chars\fR to draw Unicode dominoes
+.RS
+.PP
+\fBneo\fR --chars=0x1F030,0x1F093 --fullwidth
+.RE
+.SH "AUTHORS"
+Written by Stewart Reive
+.SH "REPORTING BUGS"
+Create an issue on GitHub: https://github.com/st3w/neo
+.SH "COPYRIGHT"
+Copyright \[co] 2021 Stewart Reive
+.PP
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+.SH "SEE ALSO"
+https://github.com/st3w/neo
+.SH "AFTERWORD"
+You get used to it. I... I don't even see the code.
+All I see is blonde, brunette, redhead.
+Hey! You uh... want a drink? :)
