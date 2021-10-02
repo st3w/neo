@@ -40,7 +40,7 @@ A fast terminal emulator such as Alacritty is highly recommended. neo can be a b
 
 ## Building
 
-See [docs/INSTALL](docs/INSTALL) for more details.
+See [doc/INSTALL](doc/INSTALL) for more details.
 
 First, clone this repository, open a terminal window, and navigate to the repo directory.
 
@@ -119,7 +119,7 @@ File a GitHub issue. Crashes and build failures will be prioritized. Minor bugs,
 
 ## Contributing
 
-See [docs/HACKING](docs/HACKING) for more implementation details and a list of things that could be improved.
+See [doc/HACKING](doc/HACKING) for more implementation details and a list of things that could be improved.
 
 Requests for enhancement (RFEs) are not likely to be considered or implemented unless they are:
 
@@ -139,7 +139,7 @@ Pull requests will be handled in a similar manner. Pull requests for bug fixes a
 
 ## License
 
-**neo** is provided under the GNU GPL v3. See [docs/COPYING](docs/COPYING) for more details.
+**neo** is provided under the GNU GPL v3. See [doc/COPYING](doc/COPYING) for more details.
 
 ## Disclaimer
 
