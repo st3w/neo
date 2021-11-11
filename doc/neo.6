@@ -1,4 +1,4 @@
-.TH NEO 6 "Oct 2 2021" "neo version 0.5" "neo User Manual"
+.TH NEO 6 "Nov 10 2021" "neo version 0.5" "neo User Manual"
 .SH "NAME"
 neo \- simulate the digital rain from "The Matrix"
 .SH "SYNOPSIS"
@@ -150,7 +150,8 @@ If this option is set, \fBneo\fR will exit on the first key press.
 \fB\-t\fR, \fB\-\-truecolor\fR
 Use 32-bit color. Not all built-in color schemes support 32-bit color,
 and they will look identical to the 256 color mode. This option is
-mutually exclusive with the \fB\-\-mono\fR and \fB\-\-256\fR options.
+mutually exclusive with the \fB\-\-mono\fR, \fB\-\-16\fR, and
+\fB\-\-256\fR options.
 .TP
 \fB\-V\fR, \fB\-\-version\fR
 Displays the version, build date, copyright, and license.
@@ -178,7 +179,7 @@ Sets the maximum number of droplets per column. The default value is 3.
 .TP
 \fB\-\-mono\fR
 Disables color output. This option is mutually exclusive with the
-\fB\-t\fR/\fB\-\-truecolor\fR and \fB\-\-256\fR options.
+\fB\-t\fR/\fB\-\-truecolor\fR, \fB\-\-16\fR, and \fB\-\-256\fR options.
 .TP
 \fB\-\-noglitch\fR
 Disables character glitching.
@@ -192,7 +193,11 @@ NUM is a decimal number between 0.0 and 1.0 inclusive. The default value is
 .TP
 \fB\-\-256\fR
 Use 256 colors. This option is mutually exclusive with the
-\fB\-t\fR/\fB\-\-truecolor\fR and \fB\-\-mono\fR options.
+\fB\-t\fR/\fB\-\-truecolor\fR, \fB\-\-16\fR, and \fB\-\-mono\fR options.
+.TP
+\fB\-\-16\fR
+Use 16 colors. This option is mutually exclusive with the
+\fB\-t\fR/\fB\-\-truecolor\fR, \fB\-\-256\fR, and \fB\-\-mono\fR options.
 .SH "KEYS"
 .PP
 You can press keys while \fBneo\fR is running to control its behavior. The key
@@ -268,26 +273,28 @@ ascending order of brightness. \fBneo\fR will not sort the colors. The last
 color should usually be very bright (e.g. white).
 .PP
 Each line in the file specifies one value or four values. If only one value is
-given, it is treated as a 256 terminal color code (e.g. 16 is black). If four
-values are given, the first is treated as a 256 color code and the other three
-are the RGB components of the 32-bit color. Each component is a value from 0
-to 1000, which closely mimics how ncurses handles color. Each value is
+given, it is treated as a 16 or 256 terminal color code (e.g. 16 is black). If
+four values are given, the first is treated as a 16/256 color code and the other
+three are the RGB components of the 32-bit color. Each component is a value from
+0 to 1000, which closely mimics how ncurses handles color. Each value is
 separated by a comma, and whitespace is allowed.
 .PP
 If more than one value is given on a line, then all four values must be given.
 Lines do not all have to have the same number of components i.e. some lines
-can just specify the 256 color code while others can specify all four values.
+can just specify the 16/256 color code while others can specify all four values.
 .PP
-On most systems, if a value of "-1" is provided for the 256 color code, this
+On most systems, if a value of "-1" is provided for the 16/256 color code, this
 will set the color to the system default. This can be useful if you want to
 keep the default background.
 .PP
 All ncurses implementations should allow you to override at least the first 256
-colors. Some will let you override even more than that. ncurses should restore
-all colors back to their previous state as long as \fBneo\fR exits cleanly.
+colors, assuming your terminal supports it. Some will let you override even
+more than that. ncurses should restore all colors back to their previous state
+as long as \fBneo\fR exits cleanly.
 .PP
-If the \fB\-\-256\fR option is used, all 32-bit RGB components in the color
-file will be parsed if they are given, but they will be unused.
+If either the \fB\-\-16\fR or \fB\-\-256\fR options are used, all 32-bit RGB
+components in the color file will be parsed if they are given, but they will be
+unused.
 .PP
 Example 1: Blue text on a red background using only 256 color codes
 .RS

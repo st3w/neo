@@ -66,6 +66,7 @@ enum class Color : unsigned {
 
 enum class ColorMode {
     MONO, // no color
+    COLOR16, // 16 colors
     COLOR256, // 256 colors
     TRUECOLOR, // 32-bit color
     INVALID

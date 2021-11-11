@@ -52,7 +52,7 @@ ColorContent ParseColorLine(char* line, size_t lineNum) {
     cc.color = static_cast<short>(strtol(line, nullptr, 10));
     char* tok = strtok(line, ",");
     if (!tok) {
-        // No commas found - the user provided a single 256 color value.
+        // No commas found - the user provided a single 16 or 256 color value.
         return cc;
     }
     for (int i = 0; i < 3; i++) {
@@ -117,16 +117,17 @@ ColorMode PickColorMode(ColorMode usrColorMode) {
         return usrColorMode;
     if (!has_colors())
         return ColorMode::MONO;
-    if (can_change_color())
-        return ColorMode::TRUECOLOR;
+    if (COLORS >= 256) {
+        if (can_change_color())
+            return ColorMode::TRUECOLOR;
+        else
+            return ColorMode::COLOR256;
+    }
 
-    return ColorMode::COLOR256;
+    return ColorMode::COLOR16;
 }
 
-int InitCurses(ColorMode usrColorMode, ColorMode* pOutColorMode, bool* ascii) {
-    // If setlocale() fails, it will return nullptr, and neo should default to ASCII.
-    *ascii = (setlocale(LC_ALL, "") == nullptr);
-
+int InitCurses(ColorMode usrColorMode, ColorMode* pOutColorMode) {
     initscr();
     if (cbreak() != OK)
         Die("cbreak() failed\n");
@@ -138,10 +139,9 @@ int InitCurses(ColorMode usrColorMode, ColorMode* pOutColorMode, bool* ascii) {
     if (keypad(stdscr, true) != OK)
         Die("keypad() failed\n");
 
-    *pOutColorMode = PickColorMode(usrColorMode);
-    if (*pOutColorMode != ColorMode::MONO) {
+    if (usrColorMode != ColorMode::MONO && has_colors())
         start_color();
-    }
+    *pOutColorMode = PickColorMode(usrColorMode);
 
     if (clear() != OK)
         Die("clear() failed\n");
@@ -339,6 +339,7 @@ void PrintHelp(bool bErr) {
     fprintf(f, "      --noglitch         disable character glitching\n");
     fprintf(f, "      --shortpct=NUM     set the percentage of shortened droplets\n");
     fprintf(f, "      --256              use 256 colors\n");
+    fprintf(f, "      --16               use 16 colors\n");
     fprintf(f, "\n");
     fprintf(f, "See the manual page for more info: man neo\n");
     exit(bErr ? 1 : 0);
@@ -349,6 +350,7 @@ enum LongOpts {
     ASCII = CHAR_MAX + 1,
     CHARS,
     CHARSET,
+    COLOR16,
     COLOR256,
     MAXDPC,
     MONO,
@@ -386,6 +388,7 @@ static constexpr option long_options[] = {
     { "speed",       required_argument, nullptr, 'S' },
     { "version",     no_argument,       nullptr, 'V' },
     { "256",         no_argument,       nullptr, LongOpts::COLOR256 },
+    { "16",          no_argument,       nullptr, LongOpts::COLOR16 },
     { nullptr,       no_argument,       nullptr, 0 }
 };
 
@@ -400,6 +403,12 @@ void ParseArgsEarly(int argc, char* argv[], ColorMode* pUsrColorMode) {
             if (*pUsrColorMode != ColorMode::INVALID)
                 Die("Multiple color modes specified\n");
             *pUsrColorMode = ColorMode::MONO;
+            break;
+        }
+        case LongOpts::COLOR16: {
+            if (*pUsrColorMode != ColorMode::INVALID)
+                Die("Multiple color modes specified\n");
+            *pUsrColorMode = ColorMode::COLOR16;
             break;
         }
         case LongOpts::COLOR256: {
@@ -651,6 +660,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
             }
             break;
         }
+        case LongOpts::COLOR16:
         case LongOpts::COLOR256:
             break; // handled by ParseArgsEarly()
         case LongOpts::MAXDPC: {
@@ -747,12 +757,15 @@ void MainLoop(Cloud& cloud, double targetFPS) {
 }
 
 int main(int argc, char* argv[]) {
-    bool ascii = false;
     ColorMode usrColorMode = ColorMode::INVALID;
     ColorMode colorMode = ColorMode::INVALID;
 
     ParseArgsEarly(argc, argv, &usrColorMode);
-    if (InitCurses(usrColorMode, &colorMode, &ascii) == ERR)
+
+    // If setlocale() fails, it will return nullptr, and neo should default to ASCII.
+    const bool ascii = (setlocale(LC_ALL, "") == nullptr);
+
+    if (InitCurses(usrColorMode, &colorMode) == ERR)
         return ERR;
 
     double targetFPS = 60.0;

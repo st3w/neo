@@ -127,12 +127,8 @@ void Droplet::Draw(high_resolution_clock::time_point curTime, bool drawEverythin
         const wchar_t val = _pCloud->GetChar(line, _charPoolIdx);
 
         CharLoc cl = CharLoc::MIDDLE;
-        if (_tailPutLine != 0xFFFF) {
-            if (line == _tailPutLine + 1)
-                cl = CharLoc::TAIL;
-            else if (line == _tailPutLine + 2)
-                cl = CharLoc::TAIL_PLUS_ONE;
-        }
+        if (_tailPutLine != 0xFFFF && line == _tailPutLine + 1)
+            cl = CharLoc::TAIL;
         if (line == _headPutLine && IsHeadBright(curTime))
             cl = CharLoc::HEAD;
 

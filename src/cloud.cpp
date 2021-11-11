@@ -97,8 +97,17 @@ void Cloud::Reset() {
     // Reset all the RNG stuff
     mt.seed(0x1234567);
 
-    const int8_t lowPair = static_cast<int8_t>(min(2, _numColorPairs));
-    const int8_t highPair = _numColorPairs < 3 ? _numColorPairs : _numColorPairs - 2;
+    int8_t lowPair, highPair;
+    if (_numColorPairs < 3) {
+        lowPair = 1;
+        highPair = 1;
+    } else if (_numColorPairs == 3) {
+        lowPair = 2;
+        highPair = 2;
+    } else {
+        lowPair = 2;
+        highPair = _numColorPairs - 2;
+    }
     _randColorPair = uniform_int_distribution<int>(lowPair, highPair);
 
     _randChance = uniform_real_distribution<float>(0.0f, 1.0f);
@@ -262,10 +271,6 @@ void Cloud::GetAttr(uint16_t line, uint16_t col, wchar_t val, Droplet::CharLoc c
             pAttr->colorPair = 1;
             pAttr->isBold = false;
             break;
-        case Droplet::CharLoc::TAIL_PLUS_ONE:
-            pAttr->colorPair = min(2, _numColorPairs);
-            pAttr->isBold = false;
-            break;
         case Droplet::CharLoc::HEAD:
             pAttr->colorPair = _numColorPairs;
             pAttr->isBold = true;
@@ -325,7 +330,11 @@ void Cloud::TogglePause() {
 void Cloud::SetColor(Color c) {
     _color = c;
     use_default_colors();
-    int bgColor = _defaultBackground ? -1 : 16;
+    int bgColor = 16;
+    if (_colorMode == ColorMode::COLOR16)
+        bgColor = 0;
+    if (_defaultBackground)
+        bgColor = -1;
     switch (_color) {
         case Color::USER: {
             if (_colorMode == ColorMode::TRUECOLOR) {
@@ -342,7 +351,6 @@ void Cloud::SetColor(Color c) {
             break;
         }
         case Color::GREEN: {
-            _numColorPairs = 7;
             if (_colorMode == ColorMode::TRUECOLOR) {
                 init_color(234, 71, 141, 83);
                 init_color(22, 149, 243, 161);
@@ -352,17 +360,23 @@ void Cloud::SetColor(Color c) {
                 init_color(84, 271, 973, 667);
                 init_color(159, 667, 1000, 941);
             }
-            init_pair(1, 234, bgColor); // normal-4
-            init_pair(2, 22, bgColor);  // normal-3
-            init_pair(3, 28, bgColor);  // normal-2
-            init_pair(4, 35, bgColor);  // normal-1
-            init_pair(5, 78, bgColor);  // normal green
-            init_pair(6, 84, bgColor);  // bright green
-            init_pair(7, 159, bgColor); // leading edge
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 2;
+                init_pair(1, 10, bgColor);
+                init_pair(2, 15, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 234, bgColor); // normal-4
+                init_pair(2, 22, bgColor);  // normal-3
+                init_pair(3, 28, bgColor);  // normal-2
+                init_pair(4, 35, bgColor);  // normal-1
+                init_pair(5, 78, bgColor);  // normal green
+                init_pair(6, 84, bgColor);  // bright green
+                init_pair(7, 159, bgColor); // leading edge
+            }
             break;
         }
         case Color::GOLD: {
-            _numColorPairs = 7;
             if (_colorMode == ColorMode::TRUECOLOR) {
                 init_color(58, 839, 545, 216);
                 init_color(94, 905, 694, 447);
@@ -371,17 +385,25 @@ void Cloud::SetColor(Color c) {
                 init_color(228, 1000, 953, 796);
                 init_color(230, 976, 976, 968);
             }
-            init_pair(1, 58, bgColor); // rgb=44,23,0
-            init_pair(2, 94, bgColor); // rgb=135,78,26
-            init_pair(3, 172, bgColor); // rgb=214,139,55
-            init_pair(4, 178, bgColor); // rgb=211.137,53
-            init_pair(5, 228, bgColor); // rgb=255,235,144
-            init_pair(6, 230, bgColor); // rgb=255, 243, 203
-            init_pair(7, 231, bgColor); // pure white
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 4;
+                init_pair(1, 8, bgColor);
+                init_pair(2, 3, bgColor);
+                init_pair(3, 11, bgColor);
+                init_pair(4, 15, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 58, bgColor); // rgb=44,23,0
+                init_pair(2, 94, bgColor); // rgb=135,78,26
+                init_pair(3, 172, bgColor); // rgb=214,139,55
+                init_pair(4, 178, bgColor); // rgb=211.137,53
+                init_pair(5, 228, bgColor); // rgb=255,235,144
+                init_pair(6, 230, bgColor); // rgb=255, 243, 203
+                init_pair(7, 231, bgColor); // pure white
+            }
             break;
         }
         case Color::GREEN2: {
-            _numColorPairs = 7;
             if (_colorMode == ColorMode::TRUECOLOR) {
                 init_color(28, 16, 180, 59);
                 init_color(34, 59, 246, 117);
@@ -391,17 +413,25 @@ void Cloud::SetColor(Color c) {
                 init_color(157, 676, 969, 758);
                 init_color(231, 906, 1000, 898);
             }
-            init_pair(1, 28, bgColor);
-            init_pair(2, 34, bgColor);
-            init_pair(3, 76, bgColor);
-            init_pair(4, 84, bgColor);
-            init_pair(5, 120, bgColor);
-            init_pair(6, 157, bgColor);
-            init_pair(7, 231, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 4;
+                init_pair(1, 8, bgColor);
+                init_pair(2, 2, bgColor);
+                init_pair(3, 10, bgColor);
+                init_pair(4, 15, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 28, bgColor);
+                init_pair(2, 34, bgColor);
+                init_pair(3, 76, bgColor);
+                init_pair(4, 84, bgColor);
+                init_pair(5, 120, bgColor);
+                init_pair(6, 157, bgColor);
+                init_pair(7, 231, bgColor);
+            }
             break;
         }
         case Color::GREEN3: {
-            _numColorPairs = 7;
             if (_colorMode == ColorMode::TRUECOLOR) {
                 init_color(22, 0, 373, 0);
                 init_color(28, 0, 529, 0);
@@ -411,159 +441,255 @@ void Cloud::SetColor(Color c) {
                 init_color(82, 373, 1000, 0);
                 init_color(157, 686, 1000, 686);
             }
-            init_pair(1, 22, bgColor);
-            init_pair(2, 28, bgColor);
-            init_pair(3, 34, bgColor);
-            init_pair(4, 70, bgColor);
-            init_pair(5, 76, bgColor);
-            init_pair(6, 82, bgColor);
-            init_pair(7, 157, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 2;
+                init_pair(1, 2, bgColor);
+                init_pair(2, 15, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 22, bgColor);
+                init_pair(2, 28, bgColor);
+                init_pair(3, 34, bgColor);
+                init_pair(4, 70, bgColor);
+                init_pair(5, 76, bgColor);
+                init_pair(6, 82, bgColor);
+                init_pair(7, 157, bgColor);
+            }
             break;
         }
         case Color::YELLOW: {
-            _numColorPairs = 7;
-            init_pair(1, 100, bgColor);
-            init_pair(2, 142, bgColor);
-            init_pair(3, 184, bgColor);
-            init_pair(4, 226, bgColor);
-            init_pair(5, 227, bgColor);
-            init_pair(6, 229, bgColor);
-            init_pair(7, 230, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 3;
+                init_pair(1, 8, bgColor);
+                init_pair(2, 11, bgColor);
+                init_pair(3, 15, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 100, bgColor);
+                init_pair(2, 142, bgColor);
+                init_pair(3, 184, bgColor);
+                init_pair(4, 226, bgColor);
+                init_pair(5, 227, bgColor);
+                init_pair(6, 229, bgColor);
+                init_pair(7, 230, bgColor);
+            }
             break;
         }
         case Color::RAINBOW: {
-            _numColorPairs = 7;
-            init_pair(1, 196, bgColor);
-            init_pair(2, 208, bgColor);
-            init_pair(3, 226, bgColor);
-            init_pair(4, 46, bgColor);
-            init_pair(5, 21, bgColor);
-            init_pair(6, 93, bgColor);
-            init_pair(7, 201, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 6;
+                init_pair(1, 9, bgColor);
+                init_pair(2, 1, bgColor);
+                init_pair(3, 11, bgColor);
+                init_pair(4, 10, bgColor);
+                init_pair(5, 12, bgColor);
+                init_pair(6, 13, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 196, bgColor);
+                init_pair(2, 208, bgColor);
+                init_pair(3, 226, bgColor);
+                init_pair(4, 46, bgColor);
+                init_pair(5, 21, bgColor);
+                init_pair(6, 93, bgColor);
+                init_pair(7, 201, bgColor);
+            }
             break;
         }
         case Color::RED: {
-            _numColorPairs = 7;
-            init_pair(1, 234, bgColor);
-            init_pair(2, 52, bgColor);
-            init_pair(3, 88, bgColor);
-            init_pair(4, 124, bgColor);
-            init_pair(5, 160, bgColor);
-            init_pair(6, 196, bgColor);
-            init_pair(7, 217, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 3;
+                init_pair(1, 1, bgColor);
+                init_pair(2, 9, bgColor);
+                init_pair(3, 15, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 234, bgColor);
+                init_pair(2, 52, bgColor);
+                init_pair(3, 88, bgColor);
+                init_pair(4, 124, bgColor);
+                init_pair(5, 160, bgColor);
+                init_pair(6, 196, bgColor);
+                init_pair(7, 217, bgColor);
+            }
             break;
         }
         case Color::BLUE: {
-            _numColorPairs = 7;
-            init_pair(1, 234, bgColor);
-            init_pair(2, 17, bgColor);
-            init_pair(3, 18, bgColor);
-            init_pair(4, 19, bgColor);
-            init_pair(4, 20, bgColor);
-            init_pair(5, 21, bgColor);
-            init_pair(6, 75, bgColor);
-            init_pair(7, 159, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 3;
+                init_pair(1, 4, bgColor);
+                init_pair(2, 12, bgColor);
+                init_pair(3, 15, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 234, bgColor);
+                init_pair(2, 17, bgColor);
+                init_pair(3, 18, bgColor);
+                init_pair(4, 19, bgColor);
+                init_pair(4, 20, bgColor);
+                init_pair(5, 21, bgColor);
+                init_pair(6, 75, bgColor);
+                init_pair(7, 159, bgColor);
+            }
             break;
         }
         case Color::CYAN: {
-            _numColorPairs = 7;
-            init_pair(1, 24, bgColor);
-            init_pair(2, 25, bgColor);
-            init_pair(3, 31, bgColor);
-            init_pair(4, 32, bgColor);
-            init_pair(5, 38, bgColor);
-            init_pair(6, 45, bgColor);
-            init_pair(7, 159, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 3;
+                init_pair(1, 6, bgColor);
+                init_pair(2, 14, bgColor);
+                init_pair(3, 15, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 24, bgColor);
+                init_pair(2, 25, bgColor);
+                init_pair(3, 31, bgColor);
+                init_pair(4, 32, bgColor);
+                init_pair(5, 38, bgColor);
+                init_pair(6, 45, bgColor);
+                init_pair(7, 159, bgColor);
+            }
             break;
         }
         case Color::ORANGE:
         {
-            _numColorPairs = 7;
-            init_pair(1, 52, bgColor);
-            init_pair(2, 94, bgColor);
-            init_pair(3, 130, bgColor);
-            init_pair(4, 166, bgColor);
-            init_pair(5, 202, bgColor);
-            init_pair(6, 208, bgColor);
-            init_pair(7, 231, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                // Orange isn't really achievable in 16 color mode...
+                _numColorPairs = 2;
+                init_pair(1, 1, bgColor);
+                init_pair(2, 7, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 52, bgColor);
+                init_pair(2, 94, bgColor);
+                init_pair(3, 130, bgColor);
+                init_pair(4, 166, bgColor);
+                init_pair(5, 202, bgColor);
+                init_pair(6, 208, bgColor);
+                init_pair(7, 231, bgColor);
+            }
             break;
         }
         case Color::PURPLE:
         {
-            _numColorPairs = 7;
-            init_pair(1, 60, bgColor);
-            init_pair(2, 61, bgColor);
-            init_pair(3, 62, bgColor);
-            init_pair(4, 63, bgColor);
-            init_pair(5, 69, bgColor);
-            init_pair(6, 111, bgColor);
-            init_pair(7, 225, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 2;
+                init_pair(1, 5, bgColor);
+                init_pair(2, 7, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 60, bgColor);
+                init_pair(2, 61, bgColor);
+                init_pair(3, 62, bgColor);
+                init_pair(4, 63, bgColor);
+                init_pair(5, 69, bgColor);
+                init_pair(6, 111, bgColor);
+                init_pair(7, 225, bgColor);
+            }
             break;
         }
         case Color::PINK:
         {
-            _numColorPairs = 7;
-            init_pair(1, 133, bgColor);
-            init_pair(2, 139, bgColor);
-            init_pair(3, 176, bgColor);
-            init_pair(4, 212, bgColor);
-            init_pair(5, 218, bgColor);
-            init_pair(6, 224, bgColor);
-            init_pair(7, 231, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 2;
+                init_pair(1, 13, bgColor);
+                init_pair(2, 15, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 133, bgColor);
+                init_pair(2, 139, bgColor);
+                init_pair(3, 176, bgColor);
+                init_pair(4, 212, bgColor);
+                init_pair(5, 218, bgColor);
+                init_pair(6, 224, bgColor);
+                init_pair(7, 231, bgColor);
+            }
             break;
         }
         case Color::PINK2:
         {
-            _numColorPairs = 7;
-            init_pair(1, 145, bgColor);
-            init_pair(2, 181, bgColor);
-            init_pair(3, 217, bgColor);
-            init_pair(4, 218, bgColor);
-            init_pair(5, 224, bgColor);
-            init_pair(6, 225, bgColor);
-            init_pair(7, 231, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 3;
+                init_pair(1, 5, bgColor);
+                init_pair(2, 13, bgColor);
+                init_pair(3, 15, bgColor);
+            } else {
+                _numColorPairs = 7;
+                init_pair(1, 145, bgColor);
+                init_pair(2, 181, bgColor);
+                init_pair(3, 217, bgColor);
+                init_pair(4, 218, bgColor);
+                init_pair(5, 224, bgColor);
+                init_pair(6, 225, bgColor);
+                init_pair(7, 231, bgColor);
+            }
             break;
         }
         case Color::VAPORWAVE:
         {
-            _numColorPairs = 15;
-            init_pair(1, 53, bgColor); // dark purple
-            init_pair(2, 54, bgColor);
-            init_pair(3, 55, bgColor);
-            init_pair(4, 134, bgColor); // light purple/pink
-            init_pair(5, 177, bgColor);
-            init_pair(6, 219, bgColor);
-            init_pair(7, 214, bgColor); // Orange/yellow
-            init_pair(8, 220, bgColor);
-            init_pair(9, 227, bgColor);
-            init_pair(10, 229, bgColor);
-            init_pair(11, 87, bgColor); // cyan
-            init_pair(12, 123, bgColor);
-            init_pair(13, 159, bgColor);
-            init_pair(14, 195, bgColor);
-            init_pair(15, 231, bgColor); // white
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 5;
+                init_pair(1, 5, bgColor);
+                init_pair(2, 13, bgColor);
+                init_pair(3, 11, bgColor);
+                init_pair(4, 14, bgColor);
+                init_pair(5, 15, bgColor);
+            } else {
+                _numColorPairs = 15;
+                init_pair(1, 53, bgColor); // dark purple
+                init_pair(2, 54, bgColor);
+                init_pair(3, 55, bgColor);
+                init_pair(4, 134, bgColor); // light purple/pink
+                init_pair(5, 177, bgColor);
+                init_pair(6, 219, bgColor);
+                init_pair(7, 214, bgColor); // Orange/yellow
+                init_pair(8, 220, bgColor);
+                init_pair(9, 227, bgColor);
+                init_pair(10, 229, bgColor);
+                init_pair(11, 87, bgColor); // cyan
+                init_pair(12, 123, bgColor);
+                init_pair(13, 159, bgColor);
+                init_pair(14, 195, bgColor);
+                init_pair(15, 231, bgColor); // white
+            }
             break;
         }
         case Color::GRAY:
         {
-            _numColorPairs = 9;
-            init_pair(1, 234, bgColor);
-            init_pair(2, 237, bgColor);
-            init_pair(3, 240, bgColor);
-            init_pair(4, 243, bgColor);
-            init_pair(5, 246, bgColor);
-            init_pair(6, 249, bgColor);
-            init_pair(7, 251, bgColor);
-            init_pair(8, 252, bgColor);
-            init_pair(9, 231, bgColor);
+            if (_colorMode == ColorMode::COLOR16) {
+                _numColorPairs = 3;
+                init_pair(1, 8, bgColor);
+                init_pair(2, 7, bgColor);
+                init_pair(3, 15, bgColor);
+            } else {
+                _numColorPairs = 9;
+                init_pair(1, 234, bgColor);
+                init_pair(2, 237, bgColor);
+                init_pair(3, 240, bgColor);
+                init_pair(4, 243, bgColor);
+                init_pair(5, 246, bgColor);
+                init_pair(6, 249, bgColor);
+                init_pair(7, 251, bgColor);
+                init_pair(8, 252, bgColor);
+                init_pair(9, 231, bgColor);
+            }
             break;
         }
         default:
             break;
     }
 
-    const int8_t lowPair = static_cast<int8_t>(min(2, _numColorPairs));
-    const int8_t highPair = _numColorPairs < 3 ? _numColorPairs : _numColorPairs - 2;
+    int8_t lowPair, highPair;
+    if (_numColorPairs < 3) {
+        lowPair = 1;
+        highPair = 1;
+    } else if (_numColorPairs == 3) {
+        lowPair = 2;
+        highPair = 2;
+    } else {
+        lowPair = 2;
+        highPair = _numColorPairs - 2;
+    }
     _randColorPair.param(std::uniform_int_distribution<int>::param_type{lowPair, highPair});
     _randColorPair.reset();
     const size_t screenSize = _lines * _cols;

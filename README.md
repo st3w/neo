@@ -15,7 +15,7 @@ Cool features:
   - Half-width katakana characters
 - Can display a message similar to the title crawl in the movies
 - Unicode support
-- Supports both 256 colors and 32-bit color
+- Supports 16/256 colors and 32-bit color
 - Automatic detection of terminal color and Unicode support
 - Handles terminal resizing
 - User-defined characters and colors
@@ -86,7 +86,7 @@ man neo
 ###
 **Q:** Colors aren't working. How can this be fixed?
 
-**A:** Make sure your terminal supports colors. Double check if you need to set the TERM environment variable to enable colors. You may want to try either the "--256" or "--truecolor" option.
+**A:** Make sure your terminal supports colors. Double check if you need to set the TERM environment variable to enable colors. You may want to try the "--16", "--256", or "--truecolor" options.
 
 ###
 **Q:** How do I disable the blinking characters?

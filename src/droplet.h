@@ -53,7 +53,6 @@ public:
     enum class CharLoc { // describes where a char is within a Droplet
         MIDDLE,
         TAIL,
-        TAIL_PLUS_ONE,
         HEAD
     };
 
