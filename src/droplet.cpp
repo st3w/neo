@@ -141,7 +141,8 @@ void Droplet::Draw(high_resolution_clock::time_point curTime, bool drawEverythin
         _pCloud->GetAttr(line, _boundCol, val, cl, &attr, curTime, _headPutLine, _length);
 
         attr_t attr2 = attr.isBold ? A_BOLD : A_NORMAL;
-        cchar_t wc = { attr2 };
+        cchar_t wc = {};
+        wc.attr = attr2;
         wc.chars[0] = val;
 
         if (_pCloud->GetColorMode() != ColorMode::MONO) {

@@ -861,7 +861,8 @@ void Cloud::DrawMessage() const {
             continue;
 
         const attr_t attr = (_boldMode == BoldMode::OFF) ? A_NORMAL : A_BOLD;
-        cchar_t wc = { attr };
+        cchar_t wc = {};
+        wc.attr = attr;
         wc.chars[0] = msgChar.val;
         if (_colorMode != ColorMode::MONO)
             attron(COLOR_PAIR(_numColorPairs));
