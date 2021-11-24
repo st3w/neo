@@ -1,6 +1,6 @@
 # neo
 
-![neo is AWESOME](assets/neo_is_awesome.png)
+![neo is AWESOME](assets/neo_is_awesome.gif)
 
 **WARNING: neo may cause discomfort and seizures in people with photosensitive epilepsy. User discretion is advised.**
 
@@ -18,7 +18,7 @@ Cool features:
 - Supports 16/256 colors and 32-bit color
 - Automatic detection of terminal color and Unicode support
 - Handles terminal resizing
-- User-defined characters and colors
+- Fully customizable colors and characters
 - Many key controls and command-line options for customization
 
 **neo** is best enjoyed with some good Scotch while listening to Aphex Twin and working on tech.
@@ -148,4 +148,4 @@ Pull requests will be handled in a similar manner. Pull requests for bug fixes a
 
 ## Disclaimer
 
-This project is not affiliated with "The Matrix" or "Warner Bros".
+This project is not affiliated with "The Matrix" or "Warner Bros. Entertainment Inc.".
