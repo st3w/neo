@@ -113,6 +113,11 @@ man neo
 
 **A:** Use the -m/--message option. Don't forget to use double quotes!
 
+###
+**Q:** neo just shows simple ASCII characters. How can I make it show Unicode characters?
+
+**A:** neo detects if your locale supports Unicode. Typically, your $LANG environment variable should have "UTF" somewhere if it does (e.g. "en_US.UTF-8"). You can use commands such as localectl to change these settings. You can force **neo** to attempt to use Unicode by setting a custom charset (e.g. --charset=extended), but this still may not work due to other OS and terminal settings.
+
 ## Bugs
 
 File a GitHub issue. Crashes and build failures will be prioritized. Minor bugs, documentation errors, etc should hopefully get triaged and fixed... eventually.

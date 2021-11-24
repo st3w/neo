@@ -368,7 +368,6 @@ static constexpr option long_options[] = {
     { "colorfile",   required_argument, nullptr, 'C' },
     { "defaultbg",   no_argument,       nullptr, 'D' },
     { "density",     required_argument, nullptr, 'd' },
-    { "extended",    no_argument,       nullptr, 'x' },
     { "fps",         required_argument, nullptr, 'f' },
     { "fullwidth",   no_argument,       nullptr, 'F' },
     { "glitchms",    required_argument, nullptr, 'g' },
@@ -457,9 +456,15 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
     while ((opt = getopt_long(argc, argv, optstring, long_options, nullptr)) != -1) {
         switch (opt) {
         case LongOpts::CHARSET: {
-            if (strcasecmp(optarg, "english") == 0) {
+            if (strcasecmp(optarg, "ascii") == 0) {
+                pCloud->SetCharset(Charset::DEFAULT);
+            } else if (strcasecmp(optarg, "extended") == 0) {
+                pCloud->SetCharset(Charset::EXTENDED_DEFAULT);
+            } else if (strcasecmp(optarg, "english") == 0) {
                 pCloud->SetCharset(Charset::ENGLISH_LETTERS);
-            } else if (strcasecmp(optarg, "digits") == 0) {
+            } else if (strcasecmp(optarg, "digits") == 0 ||
+                       strcasecmp(optarg, "dec") == 0 ||
+                       strcasecmp(optarg, "decimal") == 0) {
                 pCloud->SetCharset(Charset::ENGLISH_DIGITS);
             } else if (strcasecmp(optarg, "punc") == 0) {
                 pCloud->SetCharset(Charset::ENGLISH_PUNCTUATION);
@@ -762,8 +767,11 @@ int main(int argc, char* argv[]) {
 
     ParseArgsEarly(argc, argv, &usrColorMode);
 
-    // If setlocale() fails, it will return nullptr, and neo should default to ASCII.
-    const bool ascii = (setlocale(LC_ALL, "") == nullptr);
+    // Determine whether to use UTF-8 or ASCII based on the locale
+    bool ascii = true;
+    char* loc = setlocale(LC_ALL, "");
+    if (loc && strcasestr(loc, "UTF") != nullptr)
+        ascii = false;
 
     if (InitCurses(usrColorMode, &colorMode) == ERR)
         return ERR;

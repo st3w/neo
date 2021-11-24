@@ -1,4 +1,4 @@
-.TH NEO 6 "Nov 10 2021" "neo version 0.5" "neo User Manual"
+.TH NEO 6 "Nov 23 2021" "neo version 0.5" "neo User Manual"
 .SH "NAME"
 neo \- simulate the digital rain from "The Matrix"
 .SH "SYNOPSIS"
@@ -21,7 +21,8 @@ are erased. The bottom of each droplet is a bit brighter than the rest.
 You can run \fBneo\fR without any arguments, but it has many options to
 customize it to your liking. It can also respond to key presses (try
 pressing a number!), and it accepts a color file (see the "COLOR FILE" section
-below), which allows \fBneo\fR to display user-defined colors.
+below), which allows \fBneo\fR to display user-defined colors. \fBneo\fR will
+use Unicode characters by default if it detects a locale that supports UTF.
 .SH "OPTIONS"
 .PP
 \fBneo\fR takes options in two forms: short and long. Short options cannot
@@ -170,9 +171,9 @@ provided by this option.
 .TP
 \fB\-\-charset\fR=\fILANG\fR
 Sets the charset that is used to draw characters onto the screen. It can be
-combined with the \fB--chars\fR option. The supported charsets are: english,
-digits, punc, bin, binary, hex, hexadecimal, katakana, greek, cyrillic,
-arabic, hebrew, and devanagari.
+combined with the \fB--chars\fR option. The supported charsets are: ascii,
+extended, english, dec, decimal, digits, punc, bin, binary, hex, hexadecimal,
+katakana, greek, cyrillic, arabic, hebrew, and devanagari.
 .TP
 \fB\-\-maxdpc\fR=\fINUM\fR
 Sets the maximum number of droplets per column. The default value is 3.
@@ -419,7 +420,7 @@ License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 .SH "SEE ALSO"
-https://github.com/st3w/neo
+\fBlocale\fR(1), \fBlocalectl\fR(1)
 .SH "AFTERWORD"
 You get used to it. I... I don't even see the code.
 All I see is blonde, brunette, redhead.
