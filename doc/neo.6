@@ -1,4 +1,4 @@
-.TH NEO 6 "Nov 23 2021" "neo version 0.5" "neo User Manual"
+.TH NEO 6 "Dec 11 2021" "neo version 0.5" "neo User Manual"
 .SH "NAME"
 neo \- simulate the digital rain from "The Matrix"
 .SH "SYNOPSIS"
@@ -156,10 +156,6 @@ mutually exclusive with the \fB\-\-mono\fR, \fB\-\-16\fR, and
 .TP
 \fB\-V\fR, \fB\-\-version\fR
 Displays the version, build date, copyright, and license.
-.TP
-\fB\-\-ascii\fR
-Display only simple ASCII characters. This option is useful if your system
-cannot display Unicode characters (e.g. half-width katakana).
 .TP
 \fB\-\-chars\fR=\fINUM1\fR,\fINUM2\fR
 Tells \fBneo\fR to display Unicode characters between NUM1 and NUM2 inclusive.
@@ -370,13 +366,13 @@ If you experience performance issues, here are some things to try:
 .br
 8. Disable bold characters (i.e. --bold=0)
 .br
-9. Disable Unicode characters (i.e. --ascii)
+9. Disable Unicode characters (i.e. --charset=ascii)
 .RE
 .PP
 Here is a "potato mode" config that should perform well on most systems:
 .RS
 .PP
-\fBneo\fR --fps=20 -d 0.5 --speed=5 --noglitch --mono --bold=0 --ascii
+\fBneo\fR --fps=20 -d 0.5 --speed=5 --noglitch --mono --bold=0 --charset=ascii
 .RE
 .SH "EXAMPLES"
 .PP

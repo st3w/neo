@@ -81,7 +81,7 @@ man neo
 ###
 **Q:** **neo** displays garbage characters on the screen. How can this be fixed?
 
-**A:** **neo** will attempt to use half-width katakana characters by default. You may not have a font installed that can display them correctly, or your terminal might not support Unicode well. Try the "--ascii" option or changing your font. You may also need to use the "--mono" option to disable color.
+**A:** **neo** will attempt to use half-width katakana characters by default. You may not have a font installed that can display them correctly, or your terminal might not support Unicode well. Try "--charset=ascii" or changing your font. You may also need to use the "--mono" option to disable color.
 
 ###
 **Q:** Colors aren't working. How can this be fixed?

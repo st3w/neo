@@ -331,7 +331,6 @@ void PrintHelp(bool bErr) {
     fprintf(f, "  -s, --screensaver      exit on the first key press\n");
     fprintf(f, "  -t, --truecolor        use 32-bit color\n");
     fprintf(f, "  -V, --version          print the version\n");
-    fprintf(f, "      --ascii            use ASCII characters\n");
     fprintf(f, "      --chars=NUM1,2     use a range of unicode chars\n");
     fprintf(f, "      --charset=STR      set the character set\n");
     fprintf(f, "      --maxdpc=NUM       set the maximum droplets per column\n");
@@ -347,8 +346,7 @@ void PrintHelp(bool bErr) {
 
 // Long form options that have no short equivalent
 enum LongOpts {
-    ASCII = CHAR_MAX + 1,
-    CHARS,
+    CHARS = CHAR_MAX + 1,
     CHARSET,
     COLOR16,
     COLOR256,
@@ -359,7 +357,6 @@ enum LongOpts {
 };
 
 static constexpr option long_options[] = {
-    { "ascii",       no_argument,       nullptr, LongOpts::ASCII },
     { "async",       no_argument,       nullptr, 'a' },
     { "bold",        required_argument, nullptr, 'b' },
     { "chars",       required_argument, nullptr, LongOpts::CHARS },
@@ -650,9 +647,6 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         case 'V':
             Cleanup();
             PrintVersion();
-            break;
-        case LongOpts::ASCII:
-            pCloud->SetCharset(Charset::DEFAULT);
             break;
         case LongOpts::CHARS: {
             vector<wchar_t> uniChars = ParseUserChars(optarg);
