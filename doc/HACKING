@@ -44,7 +44,6 @@ and make sure any relevant documentation has also been added or updated.
 Ideas for contribution:
 
     - Fix any open issue on GitHub
-    - Create a GIF capture of the application to showcase on the GitHub README
     - Refactor Cloud to better follow SOLID OOP principles
     - Make Cloud a proper singleton
     - Use one mt19937 object per distribution for better independence
