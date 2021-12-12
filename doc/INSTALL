@@ -9,7 +9,7 @@ The following packages are required to build and run neo:
 - libncurses-dev: neo uses ncursesw to control the terminal
 
 You will need to ensure that your C++ compiler supports C++11 and that
-your autoconf version is at least 2.61. g++ and clang should both work
+your autoconf version is at least 2.61. g++ and clang++ should both work
 for compilation.
 
 To build neo, run the following shell commands from the main directory:
@@ -45,3 +45,10 @@ executable for neo.
 ./configure CXXFLAGS="-Os -march=native -mtune=native -DNDEBUG -fno-exceptions -ffunction-sections -fdata-sections -flto" LDFLAGS="-Wl,--gc-sections -flto" CXX="clang++"
 make -j3
 sudo make install-strip
+
+
+To uninstall neo, run the following command from the directory where you built neo:
+
+sudo make uninstall
+
+neo can also be manually uninstalled by simply deleting the installed neo executable and neo.6 man page.

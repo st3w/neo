@@ -34,13 +34,13 @@ The following packages are required to build and run **neo**:
 - build-essential: make and g++ are used for compilation
 - libncurses-dev: **neo** uses ncursesw to control the terminal
 
-You will need to ensure that your C++ compiler supports C++11 and that your autoconf version is at least 2.61. g++ and clang should both work for compilation.
+You will need to ensure that your C++ compiler supports C++11 and that your autoconf version is at least 2.61. g++ and clang++ should both work for compilation.
 
 A fast terminal emulator such as Alacritty is highly recommended. neo can be a bit of a CPU hog, especially on large screens with slow terminal emulators.
 
-## Building
+## Building/Installing
 
-See [doc/INSTALL](doc/INSTALL) for more details.
+See [doc/INSTALL](doc/INSTALL) for more details. Make sure you have read the Prerequisites section and satisified all the requirements.
 
 First, clone this repository, open a terminal window, and navigate to the repo directory.
 
@@ -52,6 +52,16 @@ Run the following commands:
 make -j3
 sudo make install
 ```
+
+## Uninstalling
+
+To uninstall **neo**, run the following command from the directory where you built neo:
+
+```Shell
+sudo make uninstall
+```
+
+**neo** can also be manually uninstalled by simply deleting the installed neo executable and neo.6 man page.
 
 ## Running
 
