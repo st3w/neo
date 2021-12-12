@@ -1,4 +1,4 @@
-.TH NEO 6 "Dec 11 2021" "neo version 0.5" "neo User Manual"
+.TH NEO 6 "Dec 12 2021" "neo version 0.5" "neo User Manual"
 .SH "NAME"
 neo \- simulate the digital rain from "The Matrix"
 .SH "SYNOPSIS"
@@ -262,19 +262,36 @@ Here are the available key controls:
 .PP
 \fBneo\fR can read a file that specifies the background color and all the
 foreground colors. The file is given via the \fB\-C/\-\-colorfile\fR option.
-Each line in the file describes a color. The first line is the backgroud
+.PP
+You can write comments using "//", "#", ";", "*", or "@". Comments can go on
+separate lines or after the data on any line. The first line that is not
+blank or a comment \fIshould\fR be the version string. The version string line
+should look like:
+.RS
+.PP
+neo_color_version N
+.RE
+.PP
+where "N" is the color file version number, which is currently 1.
+The version string is optional, and if it is omitted, then \fBneo\fR will
+assume that the file adheres to the latest version's format. This could
+potentially break old color files. Ye have been warned! \fBneo\fR will try
+to maintain backwards compatability with older color file versions so long
+as their version is actually given.
+.PP
+Each data line in the file describes a color. The first line is the background
 color. Each subsequent line describes a foreground color. Each file must
 contain at least two lines: one for the background and one for the
-foreground. Typically, you will want to put the foreground colors in
-ascending order of brightness. \fBneo\fR will not sort the colors. The last
-color should usually be very bright (e.g. white).
+foreground. Typically, you will want to put the foreground colors in order of
+ascending brightness. \fBneo\fR will not sort the colors. The last color should
+usually be very bright (e.g. white).
 .PP
-Each line in the file specifies one value or four values. If only one value is
-given, it is treated as a 16 or 256 terminal color code (e.g. 16 is black). If
-four values are given, the first is treated as a 16/256 color code and the other
-three are the RGB components of the 32-bit color. Each component is a value from
-0 to 1000, which closely mimics how ncurses handles color. Each value is
-separated by a comma, and whitespace is allowed.
+Each data line in the file specifies one value or four values. If only one value
+is given, it is treated as a 16 or 256 terminal color code (e.g. 16 is black).
+If four values are given, the first is treated as a 16/256 color code and the
+other three are the RGB components of the 32-bit color. Each component is a
+value from 0 to 1000, which closely mimics how ncurses handles color. Each value
+is separated by a comma, and whitespace is allowed.
 .PP
 If more than one value is given on a line, then all four values must be given.
 Lines do not all have to have the same number of components i.e. some lines

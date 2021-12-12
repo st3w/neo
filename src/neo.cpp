@@ -50,19 +50,25 @@ static bool screensaver = false;
 ColorContent ParseColorLine(char* line, size_t lineNum) {
     ColorContent cc;
     cc.color = static_cast<short>(strtol(line, nullptr, 10));
-    char* tok = strtok(line, ",");
-    if (!tok) {
+    if (cc.color >= COLORS) {
+        Die("Bad color value (%d) on line %zu (max %d)\n",
+            cc.color, lineNum, COLORS-1);
+    }
+    if (!strstr(line, ",")) {
         // No commas found - the user provided a single 16 or 256 color value.
         return cc;
     }
+    char* tok = strtok(line, ",");
     for (int i = 0; i < 3; i++) {
         tok = strtok(nullptr, ",");
-        if (!tok || *tok == '\0' || *tok == '\n')
+        if (!tok || *tok == '\0' || *tok == '\n') {
+            Die("Color file line %zu does not have four components\n", lineNum);
             return cc;
+        }
 
         const long int val = strtol(tok, nullptr, 10);
         if (val < 0 || val > 1000)
-            Die("Bad color value (%ld) on line %zu\n", val, lineNum);
+            Die("Bad RGB component value (%ld) on line %zu\n", val, lineNum);
 
         const short sval = static_cast<short>(val);
         switch (i) {
@@ -82,21 +88,79 @@ ColorContent ParseColorLine(char* line, size_t lineNum) {
     return cc;
 }
 
+unsigned ParseColorFileVersion(FILE* colorFile, size_t* numLines) {
+    static constexpr unsigned latestVersion = 1;
+    unsigned version = latestVersion;
+    char* line = nullptr;
+    size_t lineLen;
+
+    // Ignore any comments and blank lines at the beginning of the file
+    while (getline(&line, &lineLen, colorFile) != -1) {
+        *numLines += 1;
+        if (!line || *line == '\0' || *line == '\n' || *line == ';' ||
+            *line == '#' || *line == '/' || *line == '*' || *line == '@')
+        {
+            continue;
+        }
+        break;
+    }
+    if (!line)
+        Die("Invalid color file\n");
+
+    if (strstr(line, "neo_color_version")) {
+        char* tok = strtok(line, " ");
+        if (!tok) {
+            if (line)
+                free(line);
+            Die("Invalid color file version\n");
+        }
+        tok = strtok(nullptr, " ");
+        if (!tok) {
+            if (line)
+                free(line);
+            Die("Invalid color file version\n");
+        }
+        version = strtoul(tok, nullptr, 10);
+        if (version == ULONG_MAX || !version)
+            Die("Invalid color file version\n");
+        else if (version > latestVersion)
+            Die("Color file version (%lu) is newer than supported (%lu)\n",
+                version, latestVersion);
+    } else {
+        // Assume that the first line is color content since no version string
+        // was found
+        rewind(colorFile);
+    }
+
+    if (line)
+        free(line);
+
+    return version;
+}
+
 vector<ColorContent> ParseColorFile(const char* filename) {
     FILE* colorFile = fopen(filename, "r");
     if (!colorFile)
         Die("Could not read colorfile: %s\n", filename);
 
+    size_t numLines = 0;
+
+    (void) ParseColorFileVersion(colorFile, &numLines);
+
     vector<ColorContent> colors;
     char* line = nullptr;
     size_t lineLen;
-    size_t numLines = 0;
+    size_t numColorPairs = 0;
 
     while (getline(&line, &lineLen, colorFile) != -1) {
-        if (!line || *line == '\0' || *line == '\n')
-            continue;
         numLines++;
-        if (numLines > static_cast<size_t>(COLOR_PAIRS))
+        if (!line || *line == '\0' || *line == '\n' || *line == ';' ||
+            *line == '#' || *line == '/' || *line == '*' || *line == '@')
+        {
+            continue;
+        }
+        numColorPairs++;
+        if (numColorPairs > static_cast<size_t>(COLOR_PAIRS))
             Die("Color file has too many lines (max %d)\n", COLOR_PAIRS);
 
         ColorContent cc = ParseColorLine(line, numLines);
