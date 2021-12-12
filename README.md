@@ -158,4 +158,4 @@ Pull requests will be handled in a similar manner. Pull requests for bug fixes a
 
 ## Disclaimer
 
-This project is not affiliated with "The Matrix" or "Warner Bros. Entertainment Inc.".
+This project is not affiliated with "The Matrix", Warner Bros. Entertainment Inc., Village Roadshow Pictures, Silver Pictures, nor any of their parent companies, subsidiaries, partners, or affiliates.
