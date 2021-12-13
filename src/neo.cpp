@@ -400,6 +400,7 @@ void PrintHelp(bool bErr) {
     fprintf(f, "  -V, --version          print the version\n");
     fprintf(f, "      --chars=NUM1,2     use a range of unicode chars\n");
     fprintf(f, "      --charset=STR      set the character set\n");
+    fprintf(f, "      --colormode=NUM    set the color mode\n");
     fprintf(f, "      --maxdpc=NUM       set the maximum droplets per column\n");
     fprintf(f, "      --mono             disable color output\n");
     fprintf(f, "      --noglitch         disable character glitching\n");
@@ -417,6 +418,7 @@ enum LongOpts {
     CHARSET,
     COLOR16,
     COLOR256,
+    COLORMODE,
     MAXDPC,
     MONO,
     NOGLITCH,
@@ -430,6 +432,7 @@ static constexpr option long_options[] = {
     { "charset",     required_argument, nullptr, LongOpts::CHARSET },
     { "color",       required_argument, nullptr, 'c' },
     { "colorfile",   required_argument, nullptr, 'C' },
+    { "colormode",   required_argument, nullptr, LongOpts::COLORMODE },
     { "defaultbg",   no_argument,       nullptr, 'D' },
     { "density",     required_argument, nullptr, 'd' },
     { "fps",         required_argument, nullptr, 'f' },
@@ -478,6 +481,23 @@ void ParseArgsEarly(int argc, char* argv[], ColorMode* pUsrColorMode) {
             if (*pUsrColorMode != ColorMode::INVALID)
                 Die("Multiple color modes specified\n");
             *pUsrColorMode = ColorMode::COLOR256;
+            break;
+        }
+        case LongOpts::COLORMODE: {
+            if (*pUsrColorMode != ColorMode::INVALID)
+                Die("Multiple color modes specified\n");
+            const long int mode = strtol(optarg, nullptr, 10);
+            if (mode == 0) {
+                *pUsrColorMode = ColorMode::MONO;
+            } else if (mode == 16) {
+                *pUsrColorMode = ColorMode::COLOR16;
+            } else if (mode == 32) {
+                *pUsrColorMode = ColorMode::TRUECOLOR;
+            } else if (mode == 256) {
+                *pUsrColorMode = ColorMode::COLOR256;
+            } else {
+                Die("Invalid --colormode option\n");
+            }
             break;
         }
         case 't': {
@@ -728,6 +748,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         }
         case LongOpts::COLOR16:
         case LongOpts::COLOR256:
+        case LongOpts::COLORMODE:
             break; // handled by ParseArgsEarly()
         case LongOpts::MAXDPC: {
             const long maxdpc = strtol(optarg, nullptr, 10);
