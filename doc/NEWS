@@ -1,2 +1,11 @@
+neo 0.6 - Dec 13, 2021
+    - Add 16 color support
+    - Add the --colormode option
+    - Remove the --ascii, --16, --256, --mono, and -t/--truecolor options
+    - Improve the color file parsing and add versioning
+    - Improve Unicode detection
+    - Add the following parameters for --charset: ascii, extended, dec, and
+      decimal
+
 neo 0.5 - Oct 2, 2021
     - First publicly available version
