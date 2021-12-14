@@ -1,0 +1,20 @@
+# This is a neo color file. To use this file, run:
+#
+#   neo --colorfile=colorfile2.txt
+#
+# This example shows how to set custom 32-bit colors.
+#
+# The color palette comes from gruvbox:
+#
+# https://github.com/morhetz/gruvbox
+#
+
+neo_color_version 1
+
+235, 157, 157, 157  # dark gray background
+245, 573, 514, 455  # mid-gray (foreground)
+106, 596, 592, 102  # dark green
+172, 843, 600, 129  # dark yellow
+142, 722, 733, 149  # green 
+214, 980, 741, 184  # yellow
+223, 922, 859, 698  # off-white (bottom of droplet)

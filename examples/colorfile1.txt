@@ -1,0 +1,18 @@
+# This is a neo color file. To use this file, run:
+#
+#   neo --colorfile=colorfile1.txt
+#
+# This example shows how to set a custom 256 color config.
+# Orange/brown text will scroll along a blue background.
+# It's ugly, but it demonstrates most of the key concepts.
+
+neo_color_version 1
+
+17 # dark blue background
+130 # orange (foreground)
+136
+166
+172
+208
+214
+231 # white (bottom of droplet)
