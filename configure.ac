@@ -1,5 +1,5 @@
 AC_PREREQ([2.61])
-AC_INIT([neo], [0.5])
+AC_INIT([neo], [0.6])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([foreign])
 AC_LANG(C++)
