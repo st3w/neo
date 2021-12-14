@@ -46,7 +46,7 @@ See [doc/INSTALL](doc/INSTALL) for more details. Make sure you have read the Pre
 
 ### Option 1: Using an official release tarball (EASIER)
 
-Click on the latest release on this GitHub page. Under the Assets pane, click on neo-<VERSION>.tar.gz and save it somewhere. Ignore the other "Source code" files.
+Click on the latest release on this GitHub page. Under the Assets pane, click on neo-\<VERSION>.tar.gz and save it somewhere. Ignore the other "Source code" files.
 
 Open a terminal and navigate to wherever you saved the tarball. Run the following commands:
 
