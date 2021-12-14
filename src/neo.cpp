@@ -396,17 +396,13 @@ void PrintHelp(bool bErr) {
     fprintf(f, "  -r, --rippct=NUM       set the percentage of droplets that die early\n");
     fprintf(f, "  -S, --speed=NUM        set the scroll speed in chars per second\n");
     fprintf(f, "  -s, --screensaver      exit on the first key press\n");
-    fprintf(f, "  -t, --truecolor        use 32-bit color\n");
     fprintf(f, "  -V, --version          print the version\n");
     fprintf(f, "      --chars=NUM1,2     use a range of unicode chars\n");
     fprintf(f, "      --charset=STR      set the character set\n");
     fprintf(f, "      --colormode=NUM    set the color mode\n");
     fprintf(f, "      --maxdpc=NUM       set the maximum droplets per column\n");
-    fprintf(f, "      --mono             disable color output\n");
     fprintf(f, "      --noglitch         disable character glitching\n");
     fprintf(f, "      --shortpct=NUM     set the percentage of shortened droplets\n");
-    fprintf(f, "      --256              use 256 colors\n");
-    fprintf(f, "      --16               use 16 colors\n");
     fprintf(f, "\n");
     fprintf(f, "See the manual page for more info: man neo\n");
     exit(bErr ? 1 : 0);
@@ -416,11 +412,8 @@ void PrintHelp(bool bErr) {
 enum LongOpts {
     CHARS = CHAR_MAX + 1,
     CHARSET,
-    COLOR16,
-    COLOR256,
     COLORMODE,
     MAXDPC,
-    MONO,
     NOGLITCH,
     SHORTPCT,
 };
@@ -443,71 +436,37 @@ static constexpr option long_options[] = {
     { "lingerms",    required_argument, nullptr, 'l' },
     { "maxdpc",      required_argument, nullptr, LongOpts::MAXDPC },
     { "message",     required_argument, nullptr, 'm' },
-    { "mono",        no_argument,       nullptr, LongOpts::MONO },
     { "noglitch",    no_argument,       nullptr, LongOpts::NOGLITCH },
     { "screensaver", no_argument,       nullptr, 's' },
     { "shadingmode", required_argument, nullptr, 'M' },
     { "profile",     no_argument,       nullptr, 'p' },
     { "rippct",      required_argument, nullptr, 'r' },
-    { "truecolor",   no_argument,       nullptr, 't' },
     { "shortpct",    required_argument, nullptr, LongOpts::SHORTPCT },
     { "speed",       required_argument, nullptr, 'S' },
     { "version",     no_argument,       nullptr, 'V' },
-    { "256",         no_argument,       nullptr, LongOpts::COLOR256 },
-    { "16",          no_argument,       nullptr, LongOpts::COLOR16 },
     { nullptr,       no_argument,       nullptr, 0 }
 };
 
-const char* optstring = "A:ab:C:c:Dd:Ff:G:g:hl:M:m:pr:sS:tV";
+const char* optstring = "A:ab:C:c:Dd:Ff:G:g:hl:M:m:pr:sS:V";
 
 // Parse arguments before ncurses is initialized
 void ParseArgsEarly(int argc, char* argv[], ColorMode* pUsrColorMode) {
     int opt;
     while ((opt = getopt_long(argc, argv, optstring, long_options, nullptr)) != -1) {
-        switch (opt) {
-        case LongOpts::MONO: {
-            if (*pUsrColorMode != ColorMode::INVALID)
-                Die("Multiple color modes specified\n");
+        if (opt != LongOpts::COLORMODE)
+            continue;
+
+        const long int mode = strtol(optarg, nullptr, 10);
+        if (mode == 0) {
             *pUsrColorMode = ColorMode::MONO;
-            break;
-        }
-        case LongOpts::COLOR16: {
-            if (*pUsrColorMode != ColorMode::INVALID)
-                Die("Multiple color modes specified\n");
+        } else if (mode == 16) {
             *pUsrColorMode = ColorMode::COLOR16;
-            break;
-        }
-        case LongOpts::COLOR256: {
-            if (*pUsrColorMode != ColorMode::INVALID)
-                Die("Multiple color modes specified\n");
-            *pUsrColorMode = ColorMode::COLOR256;
-            break;
-        }
-        case LongOpts::COLORMODE: {
-            if (*pUsrColorMode != ColorMode::INVALID)
-                Die("Multiple color modes specified\n");
-            const long int mode = strtol(optarg, nullptr, 10);
-            if (mode == 0) {
-                *pUsrColorMode = ColorMode::MONO;
-            } else if (mode == 16) {
-                *pUsrColorMode = ColorMode::COLOR16;
-            } else if (mode == 32) {
-                *pUsrColorMode = ColorMode::TRUECOLOR;
-            } else if (mode == 256) {
-                *pUsrColorMode = ColorMode::COLOR256;
-            } else {
-                Die("Invalid --colormode option\n");
-            }
-            break;
-        }
-        case 't': {
-            if (*pUsrColorMode != ColorMode::INVALID)
-                Die("Multiple color modes specified\n");
+        } else if (mode == 32) {
             *pUsrColorMode = ColorMode::TRUECOLOR;
-            break;
-        }
-        default:
-            break;
+        } else if (mode == 256) {
+            *pUsrColorMode = ColorMode::COLOR256;
+        } else {
+            Die("Invalid --colormode option\n");
         }
     }
 }
@@ -746,8 +705,6 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
             }
             break;
         }
-        case LongOpts::COLOR16:
-        case LongOpts::COLOR256:
         case LongOpts::COLORMODE:
             break; // handled by ParseArgsEarly()
         case LongOpts::MAXDPC: {
@@ -758,8 +715,6 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
             pCloud->SetMaxDropletsPerColumn(static_cast<uint8_t>(maxdpc));
             break;
         }
-        case LongOpts::MONO:
-            break; // handled by ParseArgsEarly()
         case LongOpts::NOGLITCH:
             pCloud->SetGlitchy(false);
             pCloud->SetGlitchPct(0.0f);

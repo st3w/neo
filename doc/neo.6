@@ -59,18 +59,18 @@ Controls if and how neo displays bold characters.
 .TP
 \fB\-C\fR, \fB\-\-colorfile\fR=\fIFILE\fR
 Read the colors from a file. This option is mutually exclusive with the
-\fB\-c\fR/\fB\-\-color\fR and \fB\-\-mono\fR options. See the "COLOR FILE"
-section below for more info.
+\fB\-c\fR/\fB\-\-color\fR and \fB\-\-colormode=0\fR options. See the
+"COLOR FILE" section below for more info.
 .TP
 \fB\-c\fR, \fB\-\-color\fR=\fICOLOR\fR
 Sets the foreground text color. This option is mutually exclusive with the
-\fB\-C\fR/\fB\-\-colorfile\fR and \fB\-\-mono\fR options. The available
+\fB\-C\fR/\fB\-\-colorfile\fR and \fB\-\-colormode=0\fR options. The available
 colors are: green, green2, green3, yellow, orange, red, blue, cyan, gold,
 rainbow, purple, pink, pink2, vaporwave, and gray.
 .TP
 \fB\-D\fR, \fB\-\-defaultbg\fR
 Use the default terminal background color. This option is mutually exclusive
-with the \fB\-C\fR/\fB\-\-colorfile\fR and \fB\-\-mono\fR options.
+with the \fB\-C\fR/\fB\-\-colorfile\fR and \fB\-\-colormode=0\fR options.
 .TP
 \fB\-d\fR, \fB\-\-density\fR=\fINUM\fR
 Controls how many droplets will appear onscreen. NUM is a decimal number.
@@ -148,12 +148,6 @@ value chosen for each droplet's speed.
 \fB\-s\fR, \fB\-\-screensaver\fR
 If this option is set, \fBneo\fR will exit on the first key press.
 .TP
-\fB\-t\fR, \fB\-\-truecolor\fR
-Use 32-bit color. Not all built-in color schemes support 32-bit color,
-and they will look identical to the 256 color mode. This option is
-mutually exclusive with the \fB\-\-mono\fR, \fB\-\-16\fR, and
-\fB\-\-256\fR options.
-.TP
 \fB\-V\fR, \fB\-\-version\fR
 Displays the version, build date, copyright, and license.
 .TP
@@ -179,10 +173,6 @@ color (i.e. mono). 16 selects 16 colors. 32 selects 32-bit color. 256 selects
 \fB\-\-maxdpc\fR=\fINUM\fR
 Sets the maximum number of droplets per column. The default value is 3.
 .TP
-\fB\-\-mono\fR
-Disables color output. This option is mutually exclusive with the
-\fB\-t\fR/\fB\-\-truecolor\fR, \fB\-\-16\fR, and \fB\-\-256\fR options.
-.TP
 \fB\-\-noglitch\fR
 Disables character glitching.
 .TP
@@ -192,14 +182,6 @@ it will extend from the top of the screen to final line, which is often
 the bottom of the screen but not always (see also: \fB\-r\fR/\fB\-\-rippct\fR).
 NUM is a decimal number between 0.0 and 1.0 inclusive. The default value is
 0.5 (i.e. 50%).
-.TP
-\fB\-\-256\fR
-Use 256 colors. This option is mutually exclusive with the
-\fB\-t\fR/\fB\-\-truecolor\fR, \fB\-\-16\fR, and \fB\-\-mono\fR options.
-.TP
-\fB\-\-16\fR
-Use 16 colors. This option is mutually exclusive with the
-\fB\-t\fR/\fB\-\-truecolor\fR, \fB\-\-256\fR, and \fB\-\-mono\fR options.
 .SH "KEYS"
 .PP
 You can press keys while \fBneo\fR is running to control its behavior. The key
@@ -311,7 +293,7 @@ colors, assuming your terminal supports it. Some will let you override even
 more than that. ncurses should restore all colors back to their previous state
 as long as \fBneo\fR exits cleanly.
 .PP
-If either the \fB\-\-16\fR or \fB\-\-256\fR options are used, all 32-bit RGB
+If either of the 16 or 256 colormode options is used, all 32-bit RGB
 components in the color file will be parsed if they are given, but they will be
 unused.
 .PP
@@ -384,7 +366,7 @@ If you experience performance issues, here are some things to try:
 .br
 6. Disabling glitching (i.e. --noglitch)
 .br
-7. Disable colors (i.e. --mono)
+7. Disable colors (i.e. --colormode=0)
 .br
 8. Disable bold characters (i.e. --bold=0)
 .br
@@ -394,7 +376,7 @@ If you experience performance issues, here are some things to try:
 Here is a "potato mode" config that should perform well on most systems:
 .RS
 .PP
-\fBneo\fR --fps=20 -d 0.5 --speed=5 --noglitch --mono --bold=0 --charset=ascii
+\fBneo\fR --fps=20 -d 0.5 --speed=5 --noglitch --colormode=0 --bold=0 --charset=ascii
 .RE
 .SH "EXAMPLES"
 .PP
@@ -407,7 +389,7 @@ Example 0: Just run it
 Example 1: Sets a faster, asynchronous scrolling speed with 256 colors
 .RS
 .PP
-\fBneo\fR -S 12 -a --color=green3 --256
+\fBneo\fR -S 12 -a --color=green3 --colormode=256
 .RE
 .PP
 Example 2: Red text with a custom message and Cyrillic characters

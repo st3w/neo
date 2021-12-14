@@ -91,12 +91,12 @@ man neo
 ###
 **Q:** **neo** displays garbage characters on the screen. How can this be fixed?
 
-**A:** **neo** will attempt to use half-width katakana characters by default. You may not have a font installed that can display them correctly, or your terminal might not support Unicode well. Try "--charset=ascii" or changing your font. You may also need to use the "--mono" option to disable color.
+**A:** **neo** will attempt to use half-width katakana characters by default. You may not have a font installed that can display them correctly, or your terminal might not support Unicode well. Try "--charset=ascii" or changing your font. You may also need to use the "--colormode=0" option to disable color.
 
 ###
 **Q:** Colors aren't working. How can this be fixed?
 
-**A:** Make sure your terminal supports colors. Double check if you need to set the TERM environment variable to enable colors. You may want to try the "--16", "--256", or "--truecolor" options.
+**A:** Make sure your terminal supports colors. Double check if you need to set the TERM environment variable to enable colors. You may want to try the "--colormode" option.
 
 ###
 **Q:** How do I disable the blinking characters?
