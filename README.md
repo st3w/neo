@@ -71,6 +71,14 @@ make -j3
 sudo make install
 ```
 
+### Option 3: Install from AUR (unofficial)
+
+For Arch and its derivatives
+
+```Shell
+yay -S neo-matrix-git
+```
+
 ## Uninstalling
 
 To uninstall **neo**, run the following command from the directory where you built neo:
