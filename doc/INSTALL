@@ -8,6 +8,12 @@ The following packages are required to build and run neo:
 - build-essential: make and g++ are used for compilation
 - libncurses-dev: neo uses ncursesw to control the terminal
 
+For macOS, make sure to include your ncurses include and library directories 
+before configuring the Makefile, for example (brew):
+
+export LDFLAGS="-L/opt/homebrew/opt/ncurses/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/ncurses/include"
+
 You will need to ensure that your C++ compiler supports C++11 and that
 your autoconf version is at least 2.61. g++ and clang++ should both work
 for compilation.
