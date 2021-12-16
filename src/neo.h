@@ -41,6 +41,8 @@ enum class Charset : unsigned {
     BINARY = 0x100,
     HEX = 0x200,
     DEVANAGARI = 0x400,
+    BRAILLE = 0x800,
+    RUNIC = 0x1000,
     DEFAULT = 0x7,
     EXTENDED_DEFAULT = 0xE,
 };

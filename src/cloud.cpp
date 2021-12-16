@@ -169,6 +169,8 @@ void Cloud::InitChars() {
         { Charset::ARABIC, {{L'\u0627', L'\u0649'}} },
         { Charset::HEBREW, {{L'\u0590', L'\u05FF'}, {L'\uFB1D', L'\uFB4F'}} },
         { Charset::DEVANAGARI, {{L'\u0900', L'\u097F'}} },
+        { Charset::BRAILLE, {{L'\u2800', L'\u28FF'}} },
+        { Charset::RUNIC, {{L'\u16A0', L'\u16FF'}} },
     };
     size_t numRanges = unicodeRanges.size();
     for (size_t range = 0; range < numRanges; range++) {

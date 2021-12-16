@@ -529,8 +529,12 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
                 pCloud->SetCharset(Charset::HEBREW);
             } else if (strcasecmp(optarg, "devanagari") == 0) {
                 pCloud->SetCharset(Charset::DEVANAGARI);
+            } else if (strcasecmp(optarg, "braille") == 0) {
+                pCloud->SetCharset(Charset::BRAILLE);
+            } else if (strcasecmp(optarg, "runic") == 0) {
+                pCloud->SetCharset(Charset::RUNIC);
             } else {
-                Die("Unsupported language specified: %s\n", optarg);
+                Die("Unsupported charset specified: %s\n", optarg);
             }
             break;
         }
