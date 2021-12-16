@@ -164,17 +164,17 @@ private:
     vector<MsgChr> _message = {};
 
     // RNG stuff
-    mt19937 mt = {};
-    uniform_int_distribution<int> _randColorPair = {};
-    uniform_real_distribution<float> _randChance = {};
-    uniform_int_distribution<uint16_t> _randLine = {};
-    uniform_int_distribution<uint16_t> _randCpIdx = {};
-    uniform_int_distribution<uint16_t> _randLen = {};
-    uniform_int_distribution<uint16_t> _randCol = {};
-    uniform_int_distribution<uint16_t> _randGlitchMs = {};
-    uniform_int_distribution<uint16_t> _randLingerMs = {};
-    uniform_int_distribution<size_t> _randCharIdx = {};
-    uniform_real_distribution<float> _randSpeed = {};
+    mt19937 mt {};
+    uniform_int_distribution<int> _randColorPair {};
+    uniform_real_distribution<float> _randChance {};
+    uniform_int_distribution<uint16_t> _randLine {};
+    uniform_int_distribution<uint16_t> _randCpIdx {};
+    uniform_int_distribution<uint16_t> _randLen {};
+    uniform_int_distribution<uint16_t> _randCol {};
+    uniform_int_distribution<uint16_t> _randGlitchMs {};
+    uniform_int_distribution<uint16_t> _randLingerMs {};
+    uniform_int_distribution<size_t> _randCharIdx {};
+    uniform_real_distribution<float> _randSpeed {};
 
     ColorMode _colorMode = ColorMode::MONO;
     int _numColorPairs = 7;

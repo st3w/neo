@@ -89,8 +89,8 @@ ColorContent ParseColorLine(char* line, size_t lineNum) {
 }
 
 unsigned ParseColorFileVersion(FILE* colorFile, size_t* numLines) {
-    static constexpr unsigned latestVersion = 1;
-    unsigned version = latestVersion;
+    static constexpr unsigned long latestVersion = 1;
+    unsigned long version = latestVersion;
     char* line = nullptr;
     size_t lineLen;
 
@@ -761,12 +761,12 @@ void Profiler(Cloud& cloud) {
         cloud.Rain();
         curTime2 = high_resolution_clock::now();
         elapsed = duration_cast<nanoseconds>(curTime2 - prevTime);
-        fprintf(fp, "app_ns=%lu\n", elapsed.count());
+        fprintf(fp, "app_ns=%lld\n", static_cast<long long int>(elapsed.count()));
         refresh();
 
         curTime = high_resolution_clock::now();
         elapsed = duration_cast<nanoseconds>(curTime - curTime2);
-        fprintf(fp, "refresh_ns=%lu\n", elapsed.count());
+        fprintf(fp, "refresh_ns=%lld\n", static_cast<long long int>(elapsed.count()));
         prevTime = curTime;
     }
 
