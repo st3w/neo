@@ -633,10 +633,10 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         }
         case 'G': {
             const float gpct = atof(optarg);
-            if (gpct < 0.0f || gpct > 1.0f)
+            if (gpct < 0.0f || gpct > 100.0f)
                 Die("Invalid -G/--glitchpct arg\n");
 
-            pCloud->SetGlitchPct(gpct);
+            pCloud->SetGlitchPct(gpct / 100.0f);
             break;
         }
         case 'h':
@@ -675,10 +675,10 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
             break;
         case 'r': {
             const float pct = atof(optarg);
-            if (pct < 0.0f || pct > 1.0f)
+            if (pct < 0.0f || pct > 100.0f)
                 Die("Invalid -r/--rippct arg\n");
 
-            pCloud->SetDieEarlyPct(pct);
+            pCloud->SetDieEarlyPct(pct / 100.0f);
             break;
         }
         case 's':
@@ -726,10 +726,10 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
             break;
         case LongOpts::SHORTPCT: {
             const float pct = atof(optarg);
-            if (pct < 0.0f || pct > 1.0f)
+            if (pct < 0.0f || pct > 100.0f)
                 Die("Invalid --shortpct arg\n");
 
-            pCloud->SetShortPct(pct);
+            pCloud->SetShortPct(pct / 100.0f);
             break;
         }
         case '?':
