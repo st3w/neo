@@ -25,15 +25,15 @@ Cool features:
 
 ## Prerequisites/Dependencies
 
-**neo** works with Linux, and it should work with other POSIX-compliant operating systems such as macOS and FreeBSD. Windows is not supported.
+**neo** works with Linux and other UNIX-like operating systems such as macOS and FreeBSD. Native Windows is not supported, but it is possible to run **neo** using WSL.
 
 The following packages are required to build and run **neo**:
 
-- build-essential: make and g++ are used for compilation
-- libncurses-dev: **neo** uses the ncursesw library to control the terminal
-- autoconf: **neo** is built using autotools (NOT NEEDED if using an official release tarball)
+- *build-essential*: make and g++ are used to build **neo**
+- *libncurses-dev*: **neo** uses the ncursesw library to control the terminal
+- *autoconf*: **neo** is built using autotools (NOT NEEDED if using an official release tarball)
 
-You will need to ensure that your C++ compiler supports C++11 and that your autoconf version is at least 2.61. g++ and clang++ should both work for compilation.
+Ensure that your C++ compiler supports C++11 and that your autoconf version is at least 2.61. g++ and clang++ both work for compilation.
 
 If you want to see Unicode characters, you must use a font that supports the characters you are trying to display. Your OS must have the font, and your terminal must use it. Your locale should have Unicode support (usually UTF-8). Check your $LANG environment variable.
 
@@ -41,15 +41,20 @@ A fast terminal emulator such as Alacritty is highly recommended. neo can be a b
 
 ## Building and Installing
 
-See [doc/INSTALL](doc/INSTALL) for more details. Make sure you have read the Prerequisites section and satisified all the requirements.
+**Make sure you have read the Prerequisites section and satisified all the requirements.** See [doc/INSTALL](doc/INSTALL) for more details.
 
-### Option 1: Using an official release tarball (EASIER)
+### Option 1: Using an official release tarball
 
 Click on the latest release on this GitHub page. Under the Assets pane, click on neo-\<VERSION>.tar.gz and save it somewhere. Ignore the other "Source code" files.
 
 Open a terminal and navigate to wherever you saved the tarball. Run the following commands:
 
 ```Shell
+# Only for macOS with Homebrew
+export LDFLAGS="-L/opt/homebrew/opt/ncurses/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/ncurses/include"
+# End of macOS Homebrew commands
+
 tar xzf neo-<VERSION>.tar.gz
 cd neo-<VERSION>
 ./configure
