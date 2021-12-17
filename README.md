@@ -32,7 +32,6 @@ The following packages are required to build and run **neo**:
 - build-essential: make and g++ are used for compilation
 - libncurses-dev: **neo** uses the ncursesw library to control the terminal
 - autoconf: **neo** is built using autotools (NOT NEEDED if using an official release tarball)
-- autoconf-archive: required for some of the autoconf checks (NOT NEEDED if using an official release tarball)
 
 You will need to ensure that your C++ compiler supports C++11 and that your autoconf version is at least 2.61. g++ and clang++ should both work for compilation.
 

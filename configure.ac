@@ -9,5 +9,4 @@ AC_PROG_MAKE_SET
 AC_CHECK_LIB(ncursesw, initscr)
 AC_CHECK_HEADERS(getopt.h locale.h ncurses.h)
 AC_CONFIG_FILES([Makefile doc/Makefile src/Makefile])
-AX_CXX_COMPILE_STDCXX_11([noext], [mandatory])
 AC_OUTPUT
