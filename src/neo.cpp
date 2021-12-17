@@ -466,7 +466,7 @@ void ParseArgsEarly(int argc, char* argv[], ColorMode* pUsrColorMode) {
         } else if (mode == 256) {
             *pUsrColorMode = ColorMode::COLOR256;
         } else {
-            Die("Invalid --colormode option\n");
+            Die("--colormode must be one of 0, 16, 32, or 256\n");
         }
     }
 }
@@ -546,7 +546,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         case 'b': {
             const int bmi = atoi(optarg);
             if (bmi >= static_cast<int>(Cloud::BoldMode::INVALID) || bmi < 0)
-                Die("Invalid -b/--bold arg\n");
+                Die("-b/--bold option must be 0, 1, or 2\n");
 
             const Cloud::BoldMode bm = static_cast<Cloud::BoldMode>(bmi);
             pCloud->SetBoldMode(bm);
@@ -601,7 +601,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         case 'd': {
             const float density = atof(optarg);
             if (density <= 0.0f || density >= 100.0f)
-                Die("Invalid -d/--density arg\n");
+                Die("-d/--density must be greater than 0 and less than 100.0\n");
 
             pCloud->SetDropletDensity(density);
             break;
@@ -609,7 +609,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         case 'f': {
             *targetFPS = atof(optarg);
             if (*targetFPS <= 0.0) {
-                Die("Invalid -f/--fps arg\n");
+                Die("-f/--fps option must be greater than 0\n");
             }
             break;
         }
@@ -621,12 +621,12 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
             char* nextStr;
             const long int low_ms = strtol(optarg, &nextStr, 10);
             if (!nextStr || *nextStr == '\0' || *(nextStr+1) == '\0')
-                Die("Invalid -g/--glitchms arg\n");
+                Die("Invalid -g/--glitchms option\n");
 
             nextStr++;
             const long int high_ms = strtol(nextStr, nullptr, 10);
             if (low_ms <= 0 || high_ms <= 0 || low_ms > high_ms || high_ms > 0xFFFFU)
-                Die("Invalid -g/--glitchms arg\n");
+                Die("Invalid -g/--glitchms option\n");
 
             pCloud->SetGlitchTimes(static_cast<uint16_t>(low_ms), static_cast<uint16_t>(high_ms));
             break;
@@ -634,7 +634,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         case 'G': {
             const float gpct = atof(optarg);
             if (gpct < 0.0f || gpct > 100.0f)
-                Die("Invalid -G/--glitchpct arg\n");
+                Die("-G/--glitchpct must be between 0 and 100.0 inclusive\n");
 
             pCloud->SetGlitchPct(gpct / 100.0f);
             break;
@@ -647,12 +647,12 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
             char* nextStr;
             const long int low_ms = strtol(optarg, &nextStr, 10);
             if (!nextStr || *nextStr == '\0' || *(nextStr+1) == '\0')
-                Die("Invalid -l/--lingerms arg\n");
+                Die("Invalid -l/--lingerms option\n");
 
             nextStr++;
             const long int high_ms = strtol(nextStr, nullptr, 10);
             if (low_ms <= 0 || high_ms <= 0 || low_ms > high_ms || high_ms > 0xFFFFU)
-                Die("Invalid -l/--lingerms arg\n");
+                Die("Invalid -l/--lingerms option\n");
 
             pCloud->SetLingerTimes(static_cast<uint16_t>(low_ms), static_cast<uint16_t>(high_ms));
 
@@ -661,7 +661,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         case 'M': {
             const int smi = atoi(optarg);
             if (smi >= static_cast<int>(Cloud::ShadingMode::INVALID) || smi < 0)
-                Die("Invalid -M/--shadingmode arg\n");
+                Die("-M/--shadingmode must be 0 or 1\n");
 
             const Cloud::ShadingMode sm = static_cast<Cloud::ShadingMode>(smi);
             pCloud->SetShadingMode(sm);
@@ -676,7 +676,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         case 'r': {
             const float pct = atof(optarg);
             if (pct < 0.0f || pct > 100.0f)
-                Die("Invalid -r/--rippct arg\n");
+                Die("-r/--rippct must be between 0 and 100.0 inclusive\n");
 
             pCloud->SetDieEarlyPct(pct / 100.0f);
             break;
@@ -687,7 +687,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         case 'S': {
             const float cps = atof(optarg);
             if (cps <= 0.0f || cps > 1000000.0f)
-                Die("Invalid -s/--speed arg\n");
+                Die("-s/--speed must be greater than 0 and less than 1000000\n");
 
             pCloud->SetCharsPerSec(cps);
             break;
@@ -714,7 +714,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         case LongOpts::MAXDPC: {
             const long maxdpc = strtol(optarg, nullptr, 10);
             if (maxdpc < 1 || maxdpc > 3)
-                Die("Invalid --maxdpc arg\n");
+                Die("--maxdpc must be 1, 2, or 3\n");
 
             pCloud->SetMaxDropletsPerColumn(static_cast<uint8_t>(maxdpc));
             break;
@@ -727,7 +727,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         case LongOpts::SHORTPCT: {
             const float pct = atof(optarg);
             if (pct < 0.0f || pct > 100.0f)
-                Die("Invalid --shortpct arg\n");
+                Die("--shortpct must be between 0 and 100.0 inclusive\n");
 
             pCloud->SetShortPct(pct / 100.0f);
             break;
