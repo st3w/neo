@@ -25,10 +25,18 @@
 #include "droplet.h"
 #include "neo.h"
 
-#include <ncurses.h>
-
 #include <random>
 #include <vector>
+
+#ifdef __APPLE__
+    #define _XOPEN_SOURCE_EXTENDED 1
+#endif
+
+#ifdef HAVE_NCURSESW_H
+    #include <ncursesw/ncurses.h>
+#else
+    #include <ncurses.h>
+#endif
 
 using namespace std;
 

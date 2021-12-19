@@ -23,7 +23,6 @@
 
 #include <getopt.h>
 #include <locale.h>
-#include <ncurses.h>
 #include <cassert>
 #include <climits>
 #include <cstdarg>
@@ -32,6 +31,17 @@
 #include <random>
 #include <thread>
 #include <utility>
+
+#ifdef __APPLE__
+    #define _XOPEN_SOURCE_EXTENDED 1
+#endif
+
+#ifdef HAVE_NCURSESW_H
+    #include <ncursesw/ncurses.h>
+#else
+    #include <ncurses.h>
+#endif
+
 using namespace std;
 using namespace chrono;
 
