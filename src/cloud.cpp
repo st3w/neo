@@ -290,8 +290,7 @@ void Cloud::GetAttr(uint16_t line, uint16_t col, wchar_t val, Droplet::CharLoc c
 }
 
 void Cloud::SetCharsPerSec(float cps) {
-    // Values below 0.1 are broken for some reason
-    _charsPerSec = max(cps, 0.25f);
+    _charsPerSec = cps;
 
     const float dropletSeconds = _lines / _charsPerSec;
     _dropletsPerSec = _cols * _dropletDensity / dropletSeconds;
@@ -728,7 +727,7 @@ void Cloud::SpawnDroplets(high_resolution_clock::time_point curTime) {
         if (!dropletToSpawn)
             break;
         FillDroplet(dropletToSpawn, col);
-        dropletToSpawn->Activate();
+        dropletToSpawn->Activate(curTime);
         _colStat[col].canSpawn = false;
         _colStat[col].numDroplets++;
         dropletsSpawned++;

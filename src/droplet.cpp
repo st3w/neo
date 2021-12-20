@@ -55,16 +55,16 @@ void Droplet::Reset() {
     _timeToLinger = milliseconds(0);
 }
 
-void Droplet::Activate() {
+void Droplet::Activate(high_resolution_clock::time_point curTime) {
     _isAlive = true;
     _isHeadCrawling = true;
     _isTailCrawling = true;
-    _lastTime = high_resolution_clock::now();
+    _lastTime = curTime;
 }
 
 void Droplet::Advance(high_resolution_clock::time_point curTime) {
     uint64_t elapsedNs = duration_cast<nanoseconds>(curTime - _lastTime).count();
-    float elapsedSec = elapsedNs / 1e9;
+    const float elapsedSec = elapsedNs / 1.0e9f;
     uint16_t charsAdvanced = static_cast<uint16_t>(round(_charsPerSec * elapsedSec));
     if (!charsAdvanced)
         return;

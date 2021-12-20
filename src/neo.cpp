@@ -697,7 +697,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         case 'S': {
             const float cps = atof(optarg);
             if (cps <= 0.0f || cps > 1000000.0f)
-                Die("-s/--speed must be greater than 0 and less than 1000000\n");
+                Die("-S/--speed must be greater than 0 and less than 1000000\n");
 
             pCloud->SetCharsPerSec(cps);
             break;

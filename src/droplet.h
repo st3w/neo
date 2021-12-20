@@ -37,7 +37,7 @@ public:
             uint16_t len, float cps, milliseconds ttl);
 
     void Reset();
-    void Activate();
+    void Activate(high_resolution_clock::time_point curTime);
     void Advance(high_resolution_clock::time_point curTime);
     void Draw(high_resolution_clock::time_point curTime, bool drawEverything);
 
