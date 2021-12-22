@@ -95,7 +95,7 @@ void Cloud::Reset() {
         droplet.Reset();
 
     // Reset all the RNG stuff
-    mt.seed(0x1234567);
+    mt.seed(high_resolution_clock::now().time_since_epoch().count());
 
     int8_t lowPair, highPair;
     if (_numColorPairs < 3) {
