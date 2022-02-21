@@ -37,7 +37,7 @@ Ensure that your C++ compiler supports C++11 and that your autoconf version is a
 
 If you want to see Unicode characters, you must use a font that supports the characters you are trying to display. Your OS must have the font, and your terminal must use it. Your locale should have Unicode support (usually UTF-8). Check your $LANG environment variable.
 
-A fast terminal emulator such as Alacritty is highly recommended. neo can be a bit of a CPU hog, especially on large screens with slow terminal emulators.
+A fast terminal emulator such as Alacritty is highly recommended. **neo** can be a bit of a CPU hog, especially on large screens with slow terminal emulators.
 
 ## Building and Installing
 
@@ -77,13 +77,13 @@ sudo make install
 
 ## Uninstalling
 
-To uninstall **neo**, run the following command from the directory where you built neo:
+To uninstall **neo**, run the following command from the directory where you built **neo**:
 
 ```Shell
 sudo make uninstall
 ```
 
-**neo** can also be manually uninstalled by simply deleting the installed neo executable and neo.6 man page.
+**neo** can also be manually uninstalled by simply deleting the installed *neo* executable and *neo.6* man page.
 
 ## Running
 
@@ -146,9 +146,9 @@ man neo
 **A:** Use the -m/--message option. Don't forget to use double quotes!
 
 ###
-**Q:** neo just shows simple ASCII characters. How can I make it show Unicode characters?
+**Q:** **neo** just shows simple ASCII characters. How can I make it show Unicode characters?
 
-**A:** neo detects if your locale supports Unicode. Typically, your $LANG environment variable should have "UTF" somewhere if it does (e.g. "en_US.UTF-8"). You can use commands such as localectl to change these settings. You can force **neo** to attempt to use Unicode by setting a custom charset (e.g. --charset=extended), but this still may not work due to other OS and terminal settings.
+**A:** **neo** detects if your locale supports Unicode. Typically, your $LANG environment variable should have "UTF" somewhere if it does (e.g. "en_US.UTF-8"). You can use commands such as localectl to change these settings. You can force **neo** to attempt to use Unicode by setting a custom charset (e.g. --charset=extended), but this still may not work due to other OS and terminal settings.
 
 ## Bugs
 
@@ -170,7 +170,7 @@ Pull requests will be handled in a similar manner. Pull requests for bug fixes a
 
 ## Acknowledgments
 
-- Chris Allegretta, the original author of cmatrix, and Abishek V Ashok, its current maintainer. cmatrix was a source of inspiration for **neo**.
+- Chris Allegretta, the original author of CMatrix, and Abishek V Ashok, its current maintainer. CMatrix was a source of inspiration for **neo**.
 - Thomas E. Dickey, because **neo** would have been a PITA to write without ncursesw
 - Everyone involved in the production of "The Matrix" and the rest of the franchise
 
