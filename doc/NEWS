@@ -1,3 +1,10 @@
+neo 0.6.1 - Feb 21, 2021
+    - Various build fixes for Gentoo, macOS, and FreeBSD
+    - Fix a bug where droplets were not drawn correctly
+    - Make --glitchpct, --rippct, and --shortpct take values between
+      0 and 100 inclusive (used to be 0 and 1)
+    - Add "braille" and "runic" charsets
+
 neo 0.6 - Dec 13, 2021
     - Add 16 color support
     - Add the --colormode option
