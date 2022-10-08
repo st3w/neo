@@ -381,9 +381,12 @@ void PrintVersion() {
     exit(0);
 }
 
-void PrintHelp(bool bErr) {
+void PrintHelp(bool bErr, const char* appName) {
     FILE* f = bErr ? stderr : stdout;
-    fprintf(f, "Usage: neo [OPTIONS]\n");
+    if (!appName || appName[0] == '\0')
+        appName = "neo";
+
+    fprintf(f, "Usage: %s [OPTIONS]\n", appName);
     fprintf(f, "\n");
     fprintf(f, "Simulate the digital rain from \"The Matrix\"\n");
     fprintf(f, "\n");
@@ -651,7 +654,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
         }
         case 'h':
             Cleanup();
-            PrintHelp(false);
+            PrintHelp(false, argv[0]);
             break;
         case 'l': {
             char* nextStr;
@@ -750,7 +753,7 @@ void ParseArgs(int argc, char* argv[], Cloud* pCloud, double* targetFPS, bool* p
             } else {
                 fprintf(stderr, "Bad command line option\n");
             }
-            PrintHelp(true);
+            PrintHelp(true, argv[0]);
             break;
         }
     }
